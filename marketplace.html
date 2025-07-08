@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Investor Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .backdrop-blur-xl {
+            backdrop-filter: blur(24px);
+        }
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        .text-transparent {
+            color: transparent;
+        }
+
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #333;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: #f8f9fa;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
+
+        .user-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: #fd7e14;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            color: #212529;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-email {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .nav-section {
+            padding: 40px 0 20px 0;
+        }
+
+        .nav-title {
+            color: #6c757d;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            color: #495057;
+        }
+
+        .nav-item.active {
+            background: #d1e7dd;
+            color: #198754;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="user-info">
+                <div class="user-avatar">E</div>
+                <div class="user-details">
+                    <div class="user-name">ElijahAbas</div>
+                    <div class="user-email">elijahfermabas@gmail.com</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                    </svg>
+                    Signals
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20 8H4V6h16zm-2-6H6v2h12zm4 10v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2m-6 4-6-3.27v6.53z"/>
+                    </svg>
+                    Subscriptions
+                </a>
+                <a href="marketplace.html" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+                    </svg>
+                    Market Place
+                </a>
+                <a href="projectx_firms_interface.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"/>
+                    </svg>
+                    ProjectX Firms
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Traders</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="m4.01 6.03 7.51 3.22-7.52-1zm7.5 8.72L4 17.97v-2.22zM2.01 3 2 10l15 2-15 2 .01 7L23 12z"/>
+                    </svg>
+                    Send Signal
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/>
+                    </svg>
+                    Subscriber CRM
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div id="app" class="min-h-screen transition-all duration-500 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <!-- Background Pattern -->
+        <div id="background-pattern" class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
+        
+        <!-- Header -->
+        <div class="relative container mx-auto px-6 pt-12 pb-8">
+            <!-- Theme Toggle -->
+            <div class="flex justify-end mb-6">
+                <button
+                    id="theme-toggle"
+                    onclick="toggleTheme()"
+                    class="p-3 rounded-full transition-all duration-300 bg-slate-800/50 text-yellow-400 hover:bg-slate-700/50 backdrop-blur-xl border border-slate-700/50"
+                >
+                    <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="text-center mb-12">
+                <h1 id="main-title" class="text-5xl font-bold mb-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                    Vetted Market Place
+                </h1>
+                <p id="main-subtitle" class="text-lg max-w-2xl mx-auto bg-gradient-to-r from-gray-300 via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                    Discover top-performing investors and follow their trades. Vet investors using real-time performance metrics and historical data.
+                </p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="flex justify-center mb-12 px-6">
+                <div id="stats-bar" class="bg-slate-900/50 border-slate-700/50 backdrop-blur-xl border rounded-2xl p-6 w-full max-w-2xl">
+                    <div class="flex items-center space-x-6 md:space-x-12">
+                        <div class="text-center flex-1">
+                            <p id="active-investors" class="text-xl md:text-3xl font-bold text-white mb-1">2,847</p>
+                            <p id="active-investors-label" class="text-xs md:text-sm text-slate-400">Active Investors</p>
+                        </div>
+                        <div id="divider-1" class="w-px h-8 md:h-12 bg-slate-700"></div>
+                        <div class="text-center flex-1">
+                            <p class="text-xl md:text-3xl font-bold text-emerald-500 mb-1">$12.4M</p>
+                            <p id="total-volume-label" class="text-xs md:text-sm text-slate-400">Total Volume</p>
+                        </div>
+                        <div id="divider-2" class="w-px h-8 md:h-12 bg-slate-700"></div>
+                        <div class="text-center flex-1">
+                            <p class="text-xl md:text-3xl font-bold text-cyan-500 mb-1">68%</p>
+                            <p id="win-rate-label" class="text-xs md:text-sm text-slate-400">Avg Win Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investor Grid -->
+            <div id="investor-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- Investor cards will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isDarkMode = true;
+
+        const investorsData = [
+            {
+                name: "Alex Chen",
+                strategy: "Tech Growth",
+                rank: 1,
+                totalTrades: 1247,
+                winRate: 78,
+                totalReturn: 156.7,
+                avgWin: 2850,
+                avgLoss: -1200,
+                profitFactor: 2.4
+            },
+            {
+                name: "Maria Rodriguez",
+                strategy: "Value Investing",
+                rank: 2,
+                totalTrades: 892,
+                winRate: 72,
+                totalReturn: 134.2,
+                avgWin: 1950,
+                avgLoss: -890,
+                profitFactor: 2.1
+            },
+            {
+                name: "James Wilson",
+                strategy: "Momentum Trading",
+                rank: 3,
+                totalTrades: 2156,
+                winRate: 65,
+                totalReturn: 98.5,
+                avgWin: 1680,
+                avgLoss: -1050,
+                profitFactor: 1.8
+            },
+            {
+                name: "Sarah Kim",
+                strategy: "Swing Trading",
+                rank: 4,
+                totalTrades: 1834,
+                winRate: 69,
+                totalReturn: 112.3,
+                avgWin: 2200,
+                avgLoss: -1400,
+                profitFactor: 1.9
+            },
+            {
+                name: "David Thompson",
+                strategy: "Options Strategy",
+                rank: 5,
+                totalTrades: 967,
+                winRate: 58,
+                totalReturn: 87.1,
+                avgWin: 3200,
+                avgLoss: -2100,
+                profitFactor: 1.6
+            },
+            {
+                name: "Lisa Park",
+                strategy: "Dividend Focus",
+                rank: 6,
+                totalTrades: 543,
+                winRate: 81,
+                totalReturn: 76.8,
+                avgWin: 1850,
+                avgLoss: -750,
+                profitFactor: 2.3
+            }
+        ];
+
+        function getWinRateColor(winRate) {
+            return winRate >= 70 ? 'text-emerald-500' : winRate >= 50 ? 'text-yellow-500' : 'text-red-500';
+        }
+
+        function getProfitFactorColor(profitFactor) {
+            return profitFactor >= 2 ? 'text-emerald-500' : profitFactor >= 1.5 ? 'text-yellow-500' : 'text-red-500';
+        }
+
+        function getWinRateBarColor(winRate) {
+            return winRate >= 70 ? 'bg-emerald-500' : winRate >= 50 ? 'bg-yellow-500' : 'bg-red-500';
+        }
+
+        function getProfilePicture(rank) {
+            const profiles = {
+                1: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Blonde Hero -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Hair -->
+                    <rect x="30" y="20" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="38" y="20" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="46" y="20" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="54" y="20" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="62" y="20" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="26" y="28" width="8" height="8" fill="#f1c40f"/>
+                    <rect x="66" y="28" width="8" height="8" fill="#f1c40f"/>
+                    <!-- Face -->
+                    <rect x="34" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="30" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="46" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <!-- Eyes -->
+                    <rect x="38" y="36" width="8" height="8" fill="#000"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#000"/>
+                    <!-- Nose -->
+                    <rect x="46" y="44" width="8" height="4" fill="#e74c3c"/>
+                    <!-- Mouth -->
+                    <rect x="42" y="52" width="8" height="4" fill="#000"/>
+                    <rect x="50" y="52" width="8" height="4" fill="#000"/>
+                    <!-- Shoulders -->
+                    <rect x="26" y="68" width="8" height="8" fill="#3498db"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#3498db"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#3498db"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#3498db"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#3498db"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#3498db"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#fdbcb4"/>
+                </svg>`,
+                2: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Dark Knight -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Helmet -->
+                    <rect x="30" y="20" width="8" height="8" fill="#34495e"/>
+                    <rect x="38" y="20" width="8" height="8" fill="#34495e"/>
+                    <rect x="46" y="20" width="8" height="8" fill="#34495e"/>
+                    <rect x="54" y="20" width="8" height="8" fill="#34495e"/>
+                    <rect x="62" y="20" width="8" height="8" fill="#34495e"/>
+                    <rect x="26" y="28" width="8" height="8" fill="#34495e"/>
+                    <rect x="66" y="28" width="8" height="8" fill="#34495e"/>
+                    <rect x="30" y="36" width="8" height="8" fill="#34495e"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#34495e"/>
+                    <!-- Face opening -->
+                    <rect x="34" y="28" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="42" y="28" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="50" y="28" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="58" y="28" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="46" y="36" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#2c3e50"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#2c3e50"/>
+                    <!-- Eyes -->
+                    <rect x="38" y="36" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#e74c3c"/>
+                    <!-- Armor -->
+                    <rect x="26" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#7f8c8d"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#34495e"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#34495e"/>
+                </svg>`,
+                3: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Wizard -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Hat -->
+                    <rect x="46" y="12" width="8" height="8" fill="#9b59b6"/>
+                    <rect x="42" y="20" width="8" height="8" fill="#9b59b6"/>
+                    <rect x="50" y="20" width="8" height="8" fill="#9b59b6"/>
+                    <rect x="38" y="28" width="8" height="8" fill="#9b59b6"/>
+                    <rect x="46" y="28" width="8" height="8" fill="#9b59b6"/>
+                    <rect x="54" y="28" width="8" height="8" fill="#9b59b6"/>
+                    <!-- Beard -->
+                    <rect x="30" y="36" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="26" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="66" y="44" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="30" y="52" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="38" y="52" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="46" y="52" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="54" y="52" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="62" y="52" width="8" height="8" fill="#ecf0f1"/>
+                    <!-- Eyes -->
+                    <rect x="38" y="36" width="8" height="8" fill="#000"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#000"/>
+                    <!-- Nose -->
+                    <rect x="46" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <!-- Robe -->
+                    <rect x="26" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#8e44ad"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#ecf0f1"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#ecf0f1"/>
+                </svg>`,
+                4: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Elf Archer -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Hair -->
+                    <rect x="30" y="20" width="8" height="8" fill="#e67e22"/>
+                    <rect x="38" y="20" width="8" height="8" fill="#e67e22"/>
+                    <rect x="46" y="20" width="8" height="8" fill="#e67e22"/>
+                    <rect x="54" y="20" width="8" height="8" fill="#e67e22"/>
+                    <rect x="62" y="20" width="8" height="8" fill="#e67e22"/>
+                    <rect x="26" y="28" width="8" height="8" fill="#e67e22"/>
+                    <rect x="66" y="28" width="8" height="8" fill="#e67e22"/>
+                    <rect x="22" y="36" width="8" height="8" fill="#e67e22"/>
+                    <rect x="70" y="36" width="8" height="8" fill="#e67e22"/>
+                    <!-- Face -->
+                    <rect x="34" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="30" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="46" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <!-- Eyes -->
+                    <rect x="38" y="36" width="8" height="8" fill="#27ae60"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#27ae60"/>
+                    <!-- Nose -->
+                    <rect x="46" y="44" width="8" height="4" fill="#e74c3c"/>
+                    <!-- Mouth -->
+                    <rect x="46" y="52" width="8" height="4" fill="#000"/>
+                    <!-- Tunic -->
+                    <rect x="26" y="68" width="8" height="8" fill="#27ae60"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#27ae60"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#27ae60"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#27ae60"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#27ae60"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#27ae60"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#fdbcb4"/>
+                </svg>`,
+                5: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Cyberpunk Hacker -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Hair -->
+                    <rect x="30" y="20" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="38" y="20" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="46" y="20" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="54" y="20" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="62" y="20" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="26" y="28" width="8" height="8" fill="#1abc9c"/>
+                    <rect x="66" y="28" width="8" height="8" fill="#1abc9c"/>
+                    <!-- Face -->
+                    <rect x="34" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="30" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="46" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <!-- Cyber Eyes -->
+                    <rect x="38" y="36" width="8" height="8" fill="#00ffff"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#00ffff"/>
+                    <!-- Nose -->
+                    <rect x="46" y="44" width="8" height="4" fill="#e74c3c"/>
+                    <!-- Mouth -->
+                    <rect x="42" y="52" width="8" height="4" fill="#000"/>
+                    <rect x="50" y="52" width="8" height="4" fill="#000"/>
+                    <!-- Jacket -->
+                    <rect x="26" y="68" width="8" height="8" fill="#000"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#000"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#000"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#000"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#000"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#000"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#fdbcb4"/>
+                </svg>`,
+                6: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <!-- Pirate -->
+                    <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#34495e" stroke-width="2"/>
+                    <!-- Bandana -->
+                    <rect x="30" y="20" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="38" y="20" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="46" y="20" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="54" y="20" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="62" y="20" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="26" y="28" width="8" height="8" fill="#e74c3c"/>
+                    <rect x="66" y="28" width="8" height="8" fill="#e74c3c"/>
+                    <!-- Face -->
+                    <rect x="34" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="28" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="30" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="38" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="46" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="54" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="62" y="36" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="34" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="42" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="58" y="44" width="8" height="8" fill="#fdbcb4"/>
+                    <!-- Eye patch -->
+                    <rect x="38" y="36" width="8" height="8" fill="#000"/>
+                    <!-- Eye -->
+                    <rect x="54" y="36" width="8" height="8" fill="#000"/>
+                    <!-- Nose -->
+                    <rect x="46" y="44" width="8" height="4" fill="#e74c3c"/>
+                    <!-- Mustache -->
+                    <rect x="38" y="48" width="8" height="4" fill="#8b4513"/>
+                    <rect x="46" y="48" width="8" height="4" fill="#8b4513"/>
+                    <rect x="54" y="48" width="8" height="4" fill="#8b4513"/>
+                    <!-- Mouth -->
+                    <rect x="46" y="52" width="8" height="4" fill="#000"/>
+                    <!-- Vest -->
+                    <rect x="26" y="68" width="8" height="8" fill="#d35400"/>
+                    <rect x="34" y="68" width="8" height="8" fill="#d35400"/>
+                    <rect x="42" y="68" width="8" height="8" fill="#d35400"/>
+                    <rect x="50" y="68" width="8" height="8" fill="#d35400"/>
+                    <rect x="58" y="68" width="8" height="8" fill="#d35400"/>
+                    <rect x="66" y="68" width="8" height="8" fill="#d35400"/>
+                    <!-- Neck -->
+                    <rect x="42" y="60" width="8" height="8" fill="#fdbcb4"/>
+                    <rect x="50" y="60" width="8" height="8" fill="#fdbcb4"/>
+                </svg>`
+            };
+            return profiles[rank] || profiles[1];
+        }
+
+        function createInvestorCard(investor) {
+            const winRateColor = getWinRateColor(investor.winRate);
+            const profitFactorColor = getProfitFactorColor(investor.profitFactor);
+            const winRateBarColor = getWinRateBarColor(investor.winRate);
+            
+            const avgWinPercentage = (investor.avgWin / (investor.avgWin + Math.abs(investor.avgLoss))) * 100;
+            const avgLossPercentage = (Math.abs(investor.avgLoss) / (investor.avgWin + Math.abs(investor.avgLoss))) * 100;
+            const ratio = (investor.avgWin / Math.abs(investor.avgLoss)).toFixed(2);
+
+            return `
+                <div class="relative ${isDarkMode 
+                    ? 'bg-slate-900/50 border-slate-700/50' 
+                    : 'bg-white/70 border-gray-200/70'
+                } backdrop-blur-xl border rounded-2xl p-6 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl investor-card">
+                    
+                    <!-- Header -->
+                    <div class="relative flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
+                                ${getProfilePicture(investor.rank)}
+                            </div>
+                            <div>
+                                <h3 class="${isDarkMode ? 'text-white' : 'text-gray-900'} font-semibold text-lg">${investor.name}</h3>
+                                <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-sm">${investor.strategy}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <svg class="w-4 h-4 ${isDarkMode ? 'text-yellow-500' : 'text-yellow-600'}" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span class="${isDarkMode ? 'text-yellow-500' : 'text-yellow-600'} text-sm font-medium">#${investor.rank}</span>
+                        </div>
+                    </div>
+
+                    <!-- 2x2 Bento Grid Layout -->
+                    <div class="relative grid grid-cols-2 gap-3 mb-4">
+                        <!-- Total Trades - Top Left -->
+                        <div class="${isDarkMode 
+                            ? 'bg-slate-800/50 border-slate-700/30' 
+                            : 'bg-gray-50/80 border-gray-200/50'
+                        } rounded-lg p-3 border text-center">
+                            <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-xs mb-1">Total Trades</p>
+                            <p class="${isDarkMode ? 'text-white' : 'text-gray-900'} text-lg font-bold">${investor.totalTrades.toLocaleString()}</p>
+                        </div>
+
+                        <!-- Total Return - Top Right -->
+                        <div class="${isDarkMode 
+                            ? 'bg-slate-800/50 border-slate-700/30' 
+                            : 'bg-gray-50/80 border-gray-200/50'
+                        } rounded-lg p-3 border text-center">
+                            <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-xs mb-1">Total Return</p>
+                            <p class="text-emerald-500 text-lg font-bold">+${investor.totalReturn}%</p>
+                        </div>
+
+                        <!-- Win Rate - Bottom Left -->
+                        <div class="${isDarkMode 
+                            ? 'bg-slate-800/50 border-slate-700/30' 
+                            : 'bg-gray-50/80 border-gray-200/50'
+                        } rounded-lg p-3 border text-center">
+                            <div class="flex items-center justify-center mb-1">
+                                <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-xs mr-1">Win Rate</p>
+                                <svg class="w-3 h-3 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                            </div>
+                            <p class="text-lg font-bold ${winRateColor}">${investor.winRate}%</p>
+                        </div>
+
+                        <!-- Profit Factor - Bottom Right -->
+                        <div class="${isDarkMode 
+                            ? 'bg-slate-800/50 border-slate-700/30' 
+                            : 'bg-gray-50/80 border-gray-200/50'
+                        } rounded-lg p-3 border text-center">
+                            <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-xs mb-1">Profit Factor</p>
+                            <p class="text-lg font-bold ${profitFactorColor}">${investor.profitFactor}x</p>
+                        </div>
+                    </div>
+
+                    <!-- Avg Win/Loss Visual - Full Width -->
+                    <div class="${isDarkMode 
+                        ? 'bg-slate-800/50 border-slate-700/30' 
+                        : 'bg-gray-50/80 border-gray-200/50'
+                    } rounded-lg p-3 border mb-4">
+                        <p class="${isDarkMode ? 'text-slate-400' : 'text-gray-600'} text-xs mb-3 text-center">Avg Win / Avg Loss</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-center">
+                                <p class="text-emerald-500 text-sm font-bold">${investor.avgWin}</p>
+                                <p class="${isDarkMode ? 'text-slate-500' : 'text-gray-500'} text-xs">Avg Win</p>
+                            </div>
+                            <div class="flex-1 mx-4">
+                                <div class="relative h-4 ${isDarkMode ? 'bg-slate-700' : 'bg-gray-300'} rounded-full overflow-hidden flex">
+                                    <div 
+                                        class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-1000 rounded-l-full"
+                                        style="width: ${avgWinPercentage}%"
+                                    ></div>
+                                    <div 
+                                        class="h-full bg-gradient-to-l from-red-500 to-red-400 transition-all duration-1000 flex-1 rounded-r-full"
+                                        style="width: ${avgLossPercentage}%"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-red-500 text-sm font-bold">${Math.abs(investor.avgLoss)}</p>
+                                <p class="${isDarkMode ? 'text-slate-500' : 'text-gray-500'} text-xs">Avg Loss</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Action Button -->
+                    <button class="relative w-full mt-4 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 hover:shadow-green-500/25' 
+                        : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 hover:shadow-green-500/25'
+                    } text-white font-semibold py-2 px-4 rounded-lg text-sm transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg">
+                        See Profile
+                    </button>
+                </div>
+            `;
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            updateTheme();
+            renderInvestors();
+        }
+
+        function updateTheme() {
+            const app = document.getElementById('app');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeToggle = document.getElementById('theme-toggle');
+            const backgroundPattern = document.getElementById('background-pattern');
+            const mainTitle = document.getElementById('main-title');
+            const mainSubtitle = document.getElementById('main-subtitle');
+            const statsBar = document.getElementById('stats-bar');
+            const activeInvestors = document.getElementById('active-investors');
+            const activeInvestorsLabel = document.getElementById('active-investors-label');
+            const totalVolumeLabel = document.getElementById('total-volume-label');
+            const winRateLabel = document.getElementById('win-rate-label');
+            const divider1 = document.getElementById('divider-1');
+            const divider2 = document.getElementById('divider-2');
+            
+            if (isDarkMode) {
+                app.className = 'min-h-screen transition-all duration-500 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950';
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+                themeToggle.className = 'p-3 rounded-full transition-all duration-300 bg-slate-800/50 text-yellow-400 hover:bg-slate-700/50 backdrop-blur-xl border border-slate-700/50';
+                backgroundPattern.className = 'absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]';
+                mainTitle.className = 'text-5xl font-bold mb-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-300 bg-clip-text text-transparent';
+                mainSubtitle.className = 'text-lg max-w-2xl mx-auto bg-gradient-to-r from-gray-300 via-gray-200 to-gray-400 bg-clip-text text-transparent';
+                statsBar.className = 'bg-slate-900/50 border-slate-700/50 backdrop-blur-xl border rounded-2xl p-6 w-full max-w-2xl';
+                activeInvestors.className = 'text-xl md:text-3xl font-bold text-white mb-1';
+                activeInvestorsLabel.className = 'text-xs md:text-sm text-slate-400';
+                totalVolumeLabel.className = 'text-xs md:text-sm text-slate-400';
+                winRateLabel.className = 'text-xs md:text-sm text-slate-400';
+                divider1.className = 'w-px h-8 md:h-12 bg-slate-700';
+                divider2.className = 'w-px h-8 md:h-12 bg-slate-700';
+            } else {
+                app.className = 'min-h-screen transition-all duration-500 bg-gradient-to-br from-gray-50 via-white to-gray-100';
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+                themeToggle.className = 'p-3 rounded-full transition-all duration-300 bg-white/70 text-blue-600 hover:bg-white/90 backdrop-blur-xl border border-gray-200/50';
+                backgroundPattern.className = 'absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(107,114,128,0.03),transparent_50%)]';
+                mainTitle.className = 'text-5xl font-bold mb-4 text-black';
+                mainSubtitle.className = 'text-lg max-w-2xl mx-auto bg-gradient-to-r from-gray-600 via-gray-500 to-gray-700 bg-clip-text text-transparent';
+                statsBar.className = 'bg-white/70 border-gray-200/70 backdrop-blur-xl border rounded-2xl p-6 w-full max-w-2xl';
+                activeInvestors.className = 'text-xl md:text-3xl font-bold text-gray-900 mb-1';
+                activeInvestorsLabel.className = 'text-xs md:text-sm text-gray-600';
+                totalVolumeLabel.className = 'text-xs md:text-sm text-gray-600';
+                winRateLabel.className = 'text-xs md:text-sm text-gray-600';
+                divider1.className = 'w-px h-8 md:h-12 bg-gray-300';
+                divider2.className = 'w-px h-8 md:h-12 bg-gray-300';
+            }
+        }
+
+        function renderInvestors() {
+            const grid = document.getElementById('investor-grid');
+            grid.innerHTML = investorsData.map(investor => createInvestorCard(investor)).join('');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderInvestors();
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

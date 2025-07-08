@@ -1,0 +1,4761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectX Copy Trader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: white;
+            color: #1f2937;
+            line-height: 1.5;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            background-color: #ecfdf5;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .header-content h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .header-content p {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .avatar {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            background-color: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            z-index: 10;
+        }
+
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #333;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: #f8f9fa;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
+
+        .user-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: #fd7e14;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            color: #212529;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-email {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .nav-section {
+            padding: 40px 0 20px 0;
+        }
+
+        .nav-title {
+            color: #6c757d;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            color: #495057;
+        }
+
+        .nav-item.active {
+            background: #d1e7dd;
+            color: #198754;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 6px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-tab.active {
+            color: white;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+        }
+
+        .nav-tab.inactive {
+            color: #64748b;
+        }
+
+        .nav-tab.inactive:hover {
+            color: #475569;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        /* Mobile Navigation Styles */
+        .mobile-nav-dropdown {
+            display: none;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .mobile-nav-toggle {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .mobile-nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .mobile-nav-arrow {
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .mobile-nav-toggle.open .mobile-nav-arrow {
+            transform: rotate(180deg);
+        }
+
+        .mobile-nav-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .mobile-nav-menu.show {
+            display: block;
+        }
+
+        .mobile-nav-item {
+            width: 100%;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .mobile-nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-item:hover {
+            background: rgba(34, 197, 94, 0.1);
+            color: #475569;
+        }
+
+        .mobile-nav-item.active {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        /* Mobile Breakpoint */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                display: none;
+            }
+            
+            .mobile-nav-dropdown {
+                display: block;
+            }
+            
+            .container {
+                padding: 16px;
+            }
+            
+            .header {
+                padding: 24px 16px;
+                margin-bottom: 24px;
+            }
+            
+            .header-content h1 {
+                font-size: 20px;
+            }
+            
+            .header-content p {
+                font-size: 14px;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .content-title {
+                font-size: 18px;
+            }
+            
+            .account-selector-dropdown {
+                min-width: 100%;
+            }
+            
+            .trade-history-account-selector {
+                padding: 0 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .live-positions-account-selector {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .risk-settings-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px;
+            }
+            
+            .dashboard {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .dashboard-box {
+                min-width: auto;
+                flex: none;
+            }
+            
+            .account-name {
+                font-size: 13px !important;
+            }
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .content-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .add-button {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .add-button:hover {
+            background-color: #16a34a;
+        }
+
+        .add-button::before {
+            content: '+';
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            color: #6b7280;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .main-content {
+            min-height: 200px;
+        }
+
+        .lead-account-section {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(148, 163, 184, 0.08);
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(156, 163, 175, 0.3);
+        }
+
+        .account-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .account-input:focus {
+            outline: none;
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .account-dropdown {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: #475569;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .account-dropdown:focus {
+            outline: none;
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .account-dropdown optgroup {
+            font-weight: 600;
+            color: #374151;
+            background: rgba(249, 250, 251, 0.9);
+        }
+
+        .account-dropdown option {
+            padding: 8px 12px;
+            font-weight: 400;
+            color: #475569;
+        }
+
+        .follower-accounts-section {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(148, 163, 184, 0.08);
+        }
+
+        .accounts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .clear-button {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .clear-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .account-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .firm-section-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #334155;
+            margin: 16px 0 8px 0;
+            padding: 8px 12px;
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 8px;
+            border-left: 4px solid #22c55e;
+        }
+
+        .account-item {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(148, 163, 184, 0.06);
+        }
+
+        .account-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(148, 163, 184, 0.15);
+            border-color: rgba(167, 139, 250, 0.4);
+        }
+
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+        }
+
+        .account-expanded-content {
+            padding: 0 24px 20px 24px;
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            display: none;
+        }
+
+        .account-expanded-content.show {
+            display: block;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .dashboard-box {
+            background-color: #e8e8e8;
+            color: black;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .dashboard-box {
+                flex: none;
+                text-align: center;
+            }
+        }
+
+        .account-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            top: 2px;
+            left: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-switch.active::before {
+            transform: translateX(24px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .account-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .sizing-input-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sizing-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .sizing-input {
+            width: 80px;
+            padding: 6px 10px;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .sizing-input:focus {
+            outline: none;
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.15);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .sizing-input::placeholder {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .firm-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(148, 163, 184, 0.06);
+        }
+
+        .firm-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(148, 163, 184, 0.15);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .firm-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .firm-name-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .firm-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .account-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .account-count:hover {
+            background-color: rgba(148, 163, 184, 0.1);
+        }
+
+        .dropdown-arrow {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #64748b;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+            margin-top: -2px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-arrow.expanded {
+            transform: rotate(-135deg);
+            margin-top: 2px;
+        }
+
+        .firm-expanded-content {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .firm-expanded-content.show {
+            display: block;
+        }
+
+        .trading-accounts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .trading-accounts-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .expand-all-btn {
+            background: none;
+            border: none;
+            color: #22c55e;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s;
+        }
+
+        .expand-all-btn:hover {
+            opacity: 0.8;
+        }
+
+        .expand-all-icon {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #22c55e;
+            border-top: none;
+            border-left: none;
+            transform: rotate(-135deg);
+        }
+
+        .trading-account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(248, 250, 252, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.4);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .trading-account-item:hover {
+            background: rgba(241, 245, 249, 0.9);
+        }
+
+        .account-number {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .account-balance {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .account-dropdown-arrow {
+            width: 12px;
+            height: 12px;
+            border: 2px solid #22c55e;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+        }
+
+        .firm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .refresh-btn:hover {
+            background: #22c55e;
+            color: white;
+        }
+
+        .edit-btn {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .edit-btn:hover {
+            background: #22c55e;
+            color: white;
+        }
+
+        .delete-btn {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .delete-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .risk-account-item {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(148, 163, 184, 0.06);
+        }
+
+        .risk-account-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(148, 163, 184, 0.15);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .risk-account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+        }
+
+        .risk-account-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .risk-account-number {
+            font-size: 16px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .risk-firm-name {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .risk-account-balance {
+            font-size: 15px;
+            font-weight: 600;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .risk-dropdown-arrow {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #64748b;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+            margin-top: -2px;
+            transition: transform 0.3s ease;
+        }
+
+        .risk-dropdown-arrow.expanded {
+            transform: rotate(-135deg);
+            margin-top: 2px;
+        }
+
+        .risk-account-content {
+            padding: 0 24px 24px 24px;
+            display: none;
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .risk-account-content.show {
+            display: block;
+        }
+
+        .risk-settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 20px;
+        }
+
+        .risk-section {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .risk-field {
+            margin-bottom: 20px;
+        }
+
+        .risk-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .risk-info-icon {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .risk-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #475569;
+            transition: border-color 0.2s;
+        }
+
+        .risk-input:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+
+        .risk-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(203, 213, 225, 0.6);
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #475569;
+            cursor: pointer;
+        }
+
+        .risk-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: #22c55e;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .trade-limits-section {
+            margin-top: 24px;
+        }
+
+        .trade-limits-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trade-limits-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .symbol-blocks-section {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .symbol-controls {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .symbol-input-group {
+            flex: 1;
+        }
+
+        .add-block-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .add-block-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+        }
+
+        /* Trading Dashboard Styles */
+        .trading-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* gap-6 = 1.5rem */
+            width: 100%;
+        }
+        
+        /* Summary Card */
+        .summary-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+        
+        .date-button-container {
+            border-radius: 8px; /* rounded-lg */
+            border: 1px solid rgba(229, 231, 235, 0.3); /* border-border/30 */
+            background: white; /* bg-card */
+            color: #111827; /* text-card-foreground */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+        }
+        
+        .date-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* gap-2 */
+            width: 100%;
+            height: 36px; /* h-9 = 2.25rem */
+            padding: 8px 16px; /* px-4 py-2 */
+            font-size: 14px; /* text-sm */
+            font-weight: 600; /* font-semibold */
+            color: #111827; /* text-foreground */
+            background: transparent;
+            border: none;
+            border-radius: 6px; /* rounded-md */
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .date-button:hover {
+            background-color: rgba(249, 250, 251, 0.5); /* hover:bg-muted/50 */
+        }
+        
+        .date-button:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 */
+            ring-offset: 2px;
+        }
+        
+        .calendar-icon {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* grid-cols-3 */
+            gap: 8px; /* gap-2 */
+        }
+        
+        .stat-card {
+            border-radius: 8px; /* rounded-lg */
+            border: 1px solid rgba(229, 231, 235, 0.3); /* border-border/30 */
+            background: white; /* bg-card */
+            padding: 12px; /* p-3 */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+        }
+        
+        @media (min-width: 768px) {
+            .stat-card {
+                padding: 16px; /* md:p-4 */
+            }
+        }
+        
+        .stat-card.col-span-2 {
+            grid-column: span 2;
+        }
+        
+        .stat-card.col-span-1 {
+            grid-column: span 1;
+        }
+        
+        .stat-label {
+            color: #6b7280; /* text-muted-foreground */
+            font-size: 16px; /* text-base */
+            margin-bottom: 4px; /* mb-1 */
+        }
+        
+        .stat-value {
+            font-size: 30px; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #059669; /* text-green-600 */
+        }
+        
+        .metrics-row {
+            grid-column: span 3; /* col-span-3 */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* grid-cols-3 */
+            gap: 8px; /* gap-2 */
+        }
+        
+        .metric-card {
+            border-radius: 8px; /* rounded-lg */
+            border: 1px solid rgba(229, 231, 235, 0.3); /* border-border/30 */
+            background: white; /* bg-card */
+            padding: 12px; /* p-3 */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (min-width: 768px) {
+            .metric-card {
+                padding: 16px; /* md:p-4 */
+            }
+        }
+        
+        .metric-value {
+            font-size: 24px; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #374151; /* text-foreground */
+            margin-bottom: 2px;
+        }
+        
+        .metric-label {
+            color: #6b7280; /* text-muted-foreground */
+            font-size: 14px; /* text-sm */
+        }
+        
+        .compliance-grade {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 2px;
+        }
+        
+        .grade-letter {
+            font-size: 20px;
+            font-weight: 700;
+            color: #374151;
+        }
+        
+        .grade-percentage {
+            color: #6b7280;
+            font-size: 10px;
+        }
+        
+        /* Trade History Card */
+        .history-card {
+            border-radius: 8px; /* rounded-lg */
+            border: 1px solid rgba(229, 231, 235, 0.3); /* border-border/30 */
+            background: white; /* bg-card */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+            overflow: hidden;
+        }
+        
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px; /* p-4 */
+        }
+        
+        .history-title {
+            font-size: 18px; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #374151;
+        }
+        
+        .history-date {
+            color: #6b7280; /* text-muted-foreground */
+            font-size: 14px; /* text-sm */
+        }
+        
+        .table-container {
+            position: relative;
+            overflow: hidden;
+            height: 400px; /* h-[400px] */
+            width: 100%; /* w-full */
+        }
+        
+        .table-viewport {
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table-viewport::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .table {
+            width: 100%; /* w-full */
+            font-size: 14px; /* text-sm */
+            border-collapse: collapse;
+        }
+        
+        .table-header {
+            position: sticky;
+            top: 0;
+            background: white; /* bg-card */
+            z-index: 10;
+        }
+        
+        .table-header th {
+            height: 48px; /* h-12 = 3rem */
+            padding: 0 16px; /* px-4 */
+            text-align: left;
+            color: #6b7280; /* text-muted-foreground */
+            font-weight: 500; /* font-medium */
+            font-size: 14px; /* text-sm */
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .table-header th:nth-child(2) {
+            text-align: center;
+        }
+        
+        .table-header th:nth-child(3),
+        .table-header th:nth-child(4) {
+            text-align: right;
+        }
+        
+        .table-body tr {
+            border-bottom: 1px solid #f1f3f4;
+            transition: background-color 0.2s;
+        }
+        
+        .table-body tr:hover {
+            background-color: rgba(249, 250, 251, 0.3); /* hover:bg-muted/30 */
+        }
+        
+        .table-body td {
+            padding: 16px; /* p-4 */
+            font-size: 14px; /* text-sm */
+        }
+        
+        .table-body td:first-child {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .table-body td:nth-child(2) {
+            text-align: center;
+        }
+        
+        .table-body td:nth-child(3),
+        .table-body td:nth-child(4) {
+            text-align: right;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border-radius: 4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            min-width: 40px;
+        }
+        
+        .status-badge.won {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-badge.lost {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .pnl-positive {
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .pnl-negative {
+            font-weight: 600;
+            color: #dc2626;
+        }
+        
+        .view-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f3f4f6;
+            color: #374151;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .view-button:hover {
+            background-color: #e5e7eb;
+        }
+
+        /* Calendar Styles */
+        .calendar-card {
+            border-radius: 8px; /* rounded-lg */
+            border: 1px solid rgba(229, 231, 235, 0.3); /* border-border/30 */
+            background: white; /* bg-card */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px; /* p-6 */
+            padding-bottom: 16px; /* pb-4 */
+            padding-top: 16px; /* pt-4 */
+        }
+
+        @media (min-width: 768px) {
+            .calendar-header {
+                padding-top: 24px; /* md:pt-6 */
+                padding-left: 16px; /* px-4 */
+                padding-right: 16px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .calendar-header {
+                padding-left: 24px; /* md:px-6 */
+                padding-right: 24px;
+            }
+        }
+
+        .calendar-title {
+            margin: 0;
+            font-size: 18px; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #111827;
+        }
+
+        @media (min-width: 768px) {
+            .calendar-title {
+                font-size: 20px; /* md:text-xl */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-title {
+                font-size: 24px; /* lg:text-2xl */
+            }
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 4px; /* gap-1 */
+        }
+
+        .calendar-nav button {
+            width: 32px; /* h-8 w-8 */
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #3B82F6;
+            font-size: 18px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color .2s;
+            border-radius: 6px; /* rounded-md */
+        }
+
+        .calendar-nav button:hover {
+            background: rgba(var(--accent), 0.1); /* hover:bg-accent */
+        }
+
+        .calendar-nav button:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+
+        .calendar-body {
+            flex-grow: 1; /* flex-grow */
+            padding: 8px; /* p-2 */
+        }
+
+        @media (min-width: 768px) {
+            .calendar-body {
+                padding: 16px; /* md:p-4 */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-body {
+                padding: 24px; /* lg:p-6 */
+            }
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr)); /* grid-cols-7 */
+            gap: 4px; /* gap-1 */
+            height: 100%; /* h-full */
+        }
+
+        @media (min-width: 768px) {
+            .calendar-grid {
+                gap: 6px; /* md:gap-1.5 */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-grid {
+                gap: 8px; /* lg:gap-2 */
+            }
+        }
+
+        .calendar-header-cell {
+            text-align: center;
+            padding-bottom: 8px; /* pb-2 */
+            font-weight: 500; /* font-medium */
+            font-size: 10px; /* text-[10px] */
+            color: #6B7280; /* text-muted-foreground */
+        }
+
+        @media (min-width: 768px) {
+            .calendar-header-cell {
+                font-size: 12px; /* md:text-xs */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-header-cell {
+                font-size: 14px; /* lg:text-sm */
+            }
+        }
+
+        .calendar-cell {
+            position: relative;
+            aspect-ratio: 1 / 1; /* aspect-square */
+            border-radius: 6px; /* rounded-md */
+            border: 1px solid rgba(229, 231, 235, 0.5); /* border-border/50 */
+            background: white; /* bg-card */
+            padding: 4px; /* p-1 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s; /* transition-colors duration-200 */
+        }
+
+        @media (min-width: 768px) {
+            .calendar-cell {
+                padding: 6px; /* p-1.5 */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-cell {
+                padding: 8px; /* p-2 */
+            }
+        }
+
+        .calendar-cell:hover {
+            background: rgba(var(--accent), 0.5); /* hover:bg-accent/50 */
+        }
+
+        .calendar-cell .date {
+            margin: 0;
+            font-weight: 500;
+            font-size: 14px;
+            color: #111827;
+        }
+
+        .calendar-cell.disabled {
+            background: rgba(249, 250, 251, 0.2); /* bg-muted/20 */
+            border: 1px solid transparent; /* border-transparent */
+            color: rgba(107, 114, 128, 0.3); /* text-muted-foreground/30 */
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .calendar-cell.disabled .date {
+            color: rgba(107, 114, 128, 0.3);
+        }
+
+        .calendar-cell.today {
+            background: #F3F4F6; /* bg-calendar-zero */
+            border: 1px solid #D1D5DB; /* border-calendar-zero */
+            color: #374151; /* text-calendar-zero-fg */
+        }
+
+        /* Pastel colors for weekdays */
+        .calendar-cell.pastel-green {
+            background: #D1FAE5; /* pastel green */
+            border: 1px solid #A7F3D0;
+        }
+
+        .calendar-cell.pastel-green:hover {
+            background: #BBFBD3;
+        }
+
+        .calendar-cell.pastel-red {
+            background: #FEE2E2; /* pastel red */
+            border: 1px solid #FECACA;
+        }
+
+        .calendar-cell.pastel-red:hover {
+            background: #FED7D7;
+        }
+
+        /* Layout for centered trade history dashboard */
+        .trade-history-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px;
+            min-height: 60vh;
+        }
+
+        .trading-dashboard {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .trade-history-layout {
+                padding: 32px;
+            }
+            
+            .trading-dashboard {
+                max-width: 900px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .trading-dashboard {
+                max-width: 1000px;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .trade-details-single {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .order-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .order-row:last-child {
+            border-bottom: none;
+        }
+
+        .order-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .order-value {
+            font-size: 0.875rem;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-section h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .detail-section p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .account-pnl-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .account-pnl-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .account-name {
+            color: #6b7280;
+        }
+
+        .account-pnl {
+            font-weight: 600;
+        }
+
+        .account-pnl.positive {
+            color: #16a34a;
+        }
+
+        .account-pnl.negative {
+            color: #dc2626;
+        }
+
+        .account-dropdown-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .account-dropdown-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .account-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .account-arrow {
+            font-size: 0.75rem;
+            color: #6b7280;
+            transition: transform 0.2s ease;
+        }
+
+        .account-dropdown-item.expanded .account-arrow {
+            transform: rotate(180deg);
+        }
+
+        .account-details {
+            margin-top: 8px;
+            padding: 12px 16px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+            margin-left: 0px;
+        }
+
+        .account-details p {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 2px;
+            line-height: 1.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="user-info">
+                <div class="user-avatar">E</div>
+                <div class="user-details">
+                    <div class="user-name">ElijahAbas</div>
+                    <div class="user-email">elijahfermabas@gmail.com</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                    </svg>
+                    Signals
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20 8H4V6h16zm-2-6H6v2h12zm4 10v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2m-6 4-6-3.27v6.53z"/>
+                    </svg>
+                    Subscriptions
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+                    </svg>
+                    Market Place
+                </a>
+                <a href="#" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"/>
+                    </svg>
+                    ProjectX Firms
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Traders</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="m4.01 6.03 7.51 3.22-7.52-1zm7.5 8.72L4 17.97v-2.22zM2.01 3 2 10l15 2-15 2 .01 7L23 12z"/>
+                    </svg>
+                    Send Signal
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/>
+                    </svg>
+                    Subscriber CRM
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="icon">🏛</div>
+            <div class="header-content">
+                <h1>ProjectX Copy Trader</h1>
+                <p>Manage all your ProjectX accounts in one place</p>
+            </div>
+            <div class="avatar">E</div>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('copy-trade')">Copy Trader</button>
+            <button class="nav-tab inactive" onclick="showTab('trade-history')">Trade History</button>
+            <button class="nav-tab inactive" onclick="showTab('live-positions')">Live Positions</button>
+            <button class="nav-tab inactive" onclick="showTab('manage-firms')">Manage Firms</button>
+            <button class="nav-tab inactive" onclick="showTab('risk-settings')">Risk Settings</button>
+        </nav>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div class="mobile-nav-dropdown">
+            <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
+                <span id="mobile-nav-label">Copy Trader</span>
+                <span class="mobile-nav-arrow">▼</span>
+            </button>
+            <div class="mobile-nav-menu" id="mobile-nav-menu">
+                <button class="mobile-nav-item active" onclick="showTabMobile('copy-trade')">Copy Trader</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('trade-history')">Trade History</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('live-positions')">Live Positions</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('manage-firms')">Manage Firms</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('risk-settings')">Risk Settings</button>
+            </div>
+        </div>
+
+        <div id="copy-trade-content" class="main-content">
+            <div class="lead-account-section">
+                <div class="section-title">
+                    Select Lead Account
+                    <div class="info-icon">i</div>
+                </div>
+                <select class="account-dropdown" id="leader-account-dropdown" onchange="selectLeaderAccount(this.value)">
+                    <option value="">-- Select a Leader Account --</option>
+                    <optgroup label="Bulenox">
+                        <option value="BX-M54697011751">BX-M54697011751 ($72,272.04)</option>
+                        <option value="BX-M54697031655">BX-M54697031655 ($86,957.06)</option>
+                        <option value="BX-M54697031757">BX-M54697031757 ($51,859.38)</option>
+                        <option value="BX-M54697041958">BX-M54697041958 ($50,334.88)</option>
+                        <option value="BX-M54697061751D">BX-M54697061751D ($246,552.20)</option>
+                        <option value="BX-M54697051759">BX-M54697051759 ($51,733.80)</option>
+                    </optgroup>
+                    <optgroup label="TopStep">
+                        <option value="TS-147258963">TS-147258963 ($125,890.50)</option>
+                        <option value="TS-963852741">TS-963852741 ($89,432.18)</option>
+                        <option value="TS-741852963">TS-741852963 ($67,205.74)</option>
+                        <option value="TS-258741963">TS-258741963 ($54,120.32)</option>
+                        <option value="TS-852963741">TS-852963741 ($43,890.15)</option>
+                    </optgroup>
+                    <optgroup label="Alpha Futures">
+                        <option value="AF-789456123">AF-789456123 ($98,765.43)</option>
+                        <option value="AF-456123789">AF-456123789 ($76,543.21)</option>
+                        <option value="AF-123789456">AF-123789456 ($65,432.10)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="follower-accounts-section" id="follower-accounts-section" style="display: none;">
+                <div class="accounts-header">
+                    <div class="section-title">
+                        Follower Accounts
+                        <div class="info-icon">i</div>
+                    </div>
+                    <button class="clear-button" onclick="clearAllToggles()">CLEAR</button>
+                </div>
+                
+                <div class="account-list">
+                    <div class="firm-section-header">Bulenox</div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(A) $8K-5K (BX-M54697031751)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch active" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(B) LOOK OUT DO NOT TOUCH PAYOUT (BX-M54697031655)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(E) 1 PAYOUT (BX-M54697031757)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(F) 2HG (BX-M54697031850)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(G) 2HG (BX-M54697031709)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="firm-section-header">TopStep</div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">TS-147258963 ($125,890.50)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">TS-963852741 ($89,432.18)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">TS-741852963 ($67,205.74)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">TS-258741963 ($54,120.32)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">TS-852963741 ($43,890.15)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="firm-section-header">Alpha Futures</div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">AF-789456123 ($98,765.43)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">AF-456123789 ($76,543.21)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">AF-123789456 ($65,432.10)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="manage-firms-content" class="main-content" style="display: none;">
+            <div class="content-header">
+                <h2 class="content-title">Connected Firms</h2>
+                <button class="add-button">Add New Firm</button>
+            </div>
+            
+            <div class="firm-card">
+                <div class="firm-header">
+                    <div class="firm-name-status">
+                        <div class="firm-name">Bulenox</div>
+                        <div class="status-icon">✓</div>
+                    </div>
+                    <div class="account-count" onclick="toggleFirm(this)">
+                        6 Accounts
+                        <div class="dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="firm-expanded-content">
+                    <div class="trading-accounts-header">
+                        <div class="trading-accounts-title">Trading Accounts</div>
+                        <button class="expand-all-btn">
+                            <div class="expand-all-icon"></div>
+                            Expand All
+                        </button>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697011751</div>
+                        <div class="account-balance">
+                            $72,272.04
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697031655</div>
+                        <div class="account-balance">
+                            $86,957.06
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697031757</div>
+                        <div class="account-balance">
+                            $51,859.38
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697041958</div>
+                        <div class="account-balance">
+                            $50,334.88
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697061751D</div>
+                        <div class="account-balance">
+                            $246,552.2
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">BX-M54697051759</div>
+                        <div class="account-balance">
+                            $51,733.8
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="firm-actions">
+                        <div class="action-btn refresh-btn">↻</div>
+                        <div class="action-btn edit-btn">✎</div>
+                        <div class="action-btn delete-btn">🗑</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="firm-card">
+                <div class="firm-header">
+                    <div class="firm-name-status">
+                        <div class="firm-name">Topstep</div>
+                        <div class="status-icon">✓</div>
+                    </div>
+                    <div class="account-count" onclick="toggleFirm(this)">
+                        5 Accounts
+                        <div class="dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="firm-expanded-content">
+                    <div class="trading-accounts-header">
+                        <div class="trading-accounts-title">Trading Accounts</div>
+                        <button class="expand-all-btn">
+                            <div class="expand-all-icon"></div>
+                            Expand All
+                        </button>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">TS-147258963</div>
+                        <div class="account-balance">
+                            $125,890.50
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">TS-963852741</div>
+                        <div class="account-balance">
+                            $89,432.18
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">TS-741852963</div>
+                        <div class="account-balance">
+                            $67,205.74
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">TS-258741963</div>
+                        <div class="account-balance">
+                            $54,120.32
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">TS-852963741</div>
+                        <div class="account-balance">
+                            $43,890.15
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="firm-actions">
+                        <div class="action-btn refresh-btn">↻</div>
+                        <div class="action-btn edit-btn">✎</div>
+                        <div class="action-btn delete-btn">🗑</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="firm-card">
+                <div class="firm-header">
+                    <div class="firm-name-status">
+                        <div class="firm-name">Alpha Futures</div>
+                        <div class="status-icon">✓</div>
+                    </div>
+                    <div class="account-count" onclick="toggleFirm(this)">
+                        3 Accounts
+                        <div class="dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="firm-expanded-content">
+                    <div class="trading-accounts-header">
+                        <div class="trading-accounts-title">Trading Accounts</div>
+                        <button class="expand-all-btn">
+                            <div class="expand-all-icon"></div>
+                            Expand All
+                        </button>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">AF-789456123</div>
+                        <div class="account-balance">
+                            $98,765.43
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">AF-456123789</div>
+                        <div class="account-balance">
+                            $76,543.21
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="trading-account-item">
+                        <div class="account-number">AF-123789456</div>
+                        <div class="account-balance">
+                            $65,432.10
+                            <div class="account-dropdown-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="firm-actions">
+                        <div class="action-btn refresh-btn">↻</div>
+                        <div class="action-btn edit-btn">✎</div>
+                        <div class="action-btn delete-btn">🗑</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="trade-history-content" class="main-content" style="display: none;">
+            <div class="content-header">
+                <h2 class="content-title">Trade History</h2>
+            </div>
+            
+            <!-- Account Selection Dropdown -->
+            <div class="trade-history-account-selector">
+                <label for="tradeHistoryAccountSelect" class="account-selector-label">Select Account:</label>
+                <select id="tradeHistoryAccountSelect" class="account-selector-dropdown">
+                    <option value="BX-M54697031751">BX-M54697031751 (A) $8K-5K</option>
+                    <option value="BX-M54697031655">BX-M54697031655 (B) LOOK OUT DO NOT TOUCH PAYOUT</option>
+                    <option value="BX-M54697031757">BX-M54697031757 (E) 1 PAYOUT</option>
+                    <option value="BX-M54697031850">BX-M54697031850 (F) 2HG</option>
+                    <option value="BX-M54697031709">BX-M54697031709 (G) 2HG</option>
+                </select>
+            </div>
+            
+            <div class="content-body">
+                <div class="trade-history-layout">
+                    <div class="trading-dashboard">
+                        
+                        <!-- Trade History Table -->
+                        <div class="history-card">
+                            <div class="history-header">
+                                <div class="history-title">Trade History</div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <div class="table-viewport">
+                                    <div class="table-scroll">
+                                        <table class="table">
+                                            <thead class="table-header">
+                                                <tr>
+                                                    <th>Ticker</th>
+                                                    <th>Status</th>
+                                                    <th>P&L</th>
+                                                    <th>Recap</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-body">
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$4,200.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$2,850.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$1,925.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge lost">LOST</div>
+                                                    </td>
+                                                    <td class="pnl-negative">-$1,750.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$3,480.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$2,120.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$5,630.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$1,845.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$3,275.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge lost">LOST</div>
+                                                    </td>
+                                                    <td class="pnl-negative">-$2,100.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$4,920.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NQ</td>
+                                                    <td>
+                                                        <div class="status-badge won">WON</div>
+                                                    </td>
+                                                    <td class="pnl-positive">+$2,365.00</td>
+                                                    <td>
+                                                        <button class="view-button" onclick="openTradeModal()">View</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trade Details Modal -->
+        <div id="tradeModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Trade Details</h2>
+                    <button class="modal-close" onclick="closeTradeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="trade-details-single">
+                        <div class="detail-section">
+                            <h4>Order Details</h4>
+                            <div class="order-summary">
+                                <div class="order-row">
+                                    <span class="order-label">Symbol:</span>
+                                    <span class="order-value">NQ Long</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="order-label">Entry:</span>
+                                    <span class="order-value">22,650.00 at 09:15:23 AM</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="order-label">Exit:</span>
+                                    <span class="order-value">22,680.00 at 09:47:12 AM</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="order-label">Contracts:</span>
+                                    <span class="order-value">2</span>
+                                </div>
+                                <div class="order-row">
+                                    <span class="order-label">Duration:</span>
+                                    <span class="order-value">31 minutes 49 seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>Account P&L</h4>
+                            <div class="account-pnl-list">
+                                <div class="account-pnl-row">
+                                    <span class="account-name">Leader Account:</span>
+                                    <span class="account-pnl positive">+$1,200.00</span>
+                                </div>
+                                
+                                <div class="account-dropdown-item" onclick="toggleAccountDetails(this)">
+                                    <div class="account-pnl-row">
+                                        <span class="account-name">BX-M54697031751 (A):</span>
+                                        <div class="account-summary">
+                                            <span class="account-pnl positive">+$1,185.00</span>
+                                            <span class="account-arrow">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-details" style="display: none;">
+                                        <p>Entry: 22,648.00 at 09:15:25 AM</p>
+                                        <p>Exit: 22,678.00 at 09:47:10 AM</p>
+                                        <p>Contracts: 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="account-dropdown-item" onclick="toggleAccountDetails(this)">
+                                    <div class="account-pnl-row">
+                                        <span class="account-name">BX-M54697031655 (B):</span>
+                                        <div class="account-summary">
+                                            <span class="account-pnl positive">+$1,212.00</span>
+                                            <span class="account-arrow">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-details" style="display: none;">
+                                        <p>Entry: 22,651.00 at 09:15:24 AM</p>
+                                        <p>Exit: 22,681.00 at 09:47:11 AM</p>
+                                        <p>Contracts: 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="account-dropdown-item" onclick="toggleAccountDetails(this)">
+                                    <div class="account-pnl-row">
+                                        <span class="account-name">BX-M54697031757 (E):</span>
+                                        <div class="account-summary">
+                                            <span class="account-pnl positive">+$1,192.00</span>
+                                            <span class="account-arrow">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-details" style="display: none;">
+                                        <p>Entry: 22,649.00 at 09:15:26 AM</p>
+                                        <p>Exit: 22,679.00 at 09:47:09 AM</p>
+                                        <p>Contracts: 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="account-dropdown-item" onclick="toggleAccountDetails(this)">
+                                    <div class="account-pnl-row">
+                                        <span class="account-name">BX-M54697031850 (F):</span>
+                                        <div class="account-summary">
+                                            <span class="account-pnl positive">+$1,218.00</span>
+                                            <span class="account-arrow">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-details" style="display: none;">
+                                        <p>Entry: 22,653.00 at 09:15:22 AM</p>
+                                        <p>Exit: 22,683.00 at 09:47:13 AM</p>
+                                        <p>Contracts: 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="account-dropdown-item" onclick="toggleAccountDetails(this)">
+                                    <div class="account-pnl-row">
+                                        <span class="account-name">BX-M54697031709 (G):</span>
+                                        <div class="account-summary">
+                                            <span class="account-pnl positive">+$1,205.00</span>
+                                            <span class="account-arrow">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-details" style="display: none;">
+                                        <p>Entry: 22,652.00 at 09:15:24 AM</p>
+                                        <p>Exit: 22,682.00 at 09:47:12 AM</p>
+                                        <p>Contracts: 2</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="live-positions-content" class="main-content" style="display: none;">
+            <style>
+                .live-positions-container {
+                    max-width: 64rem;
+                    margin: 0 auto;
+                }
+
+                .live-positions-account-selector {
+                    margin-bottom: 2rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                }
+
+                .account-selector-label {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    color: #374151;
+                }
+
+                .account-selector-dropdown {
+                    padding: 0.5rem 0.75rem;
+                    border: 1px solid #d1d5db;
+                    border-radius: 0.5rem;
+                    font-size: 0.875rem;
+                    background-color: white;
+                    color: #374151;
+                    min-width: 300px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+
+                .account-selector-dropdown:focus {
+                    outline: none;
+                    border-color: #3b82f6;
+                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                }
+
+                .account-selector-dropdown:hover {
+                    border-color: #9ca3af;
+                }
+
+                .trade-history-account-selector {
+                    margin-bottom: 2rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    padding: 0 24px;
+                }
+
+                .live-positions-grid {
+                    display: grid;
+                    gap: 1.5rem;
+                    margin-bottom: 1.5rem;
+                }
+
+                .live-positions-grid-cols-2 {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .live-positions-grid-cols-1 {
+                    grid-template-columns: 1fr;
+                }
+
+                .live-positions-card {
+                    background: white;
+                    border-radius: 0.75rem;
+                    padding: 1.5rem;
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+                    border: 1px solid #f3f4f6;
+                    position: relative;
+                }
+
+                .live-positions-card-label {
+                    font-size: 0.875rem;
+                    color: #6b7280;
+                    margin-bottom: 0.5rem;
+                }
+
+                .live-positions-card-value {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    color: #111827;
+                }
+
+                .live-positions-card-value-large {
+                    font-size: 1.875rem;
+                }
+
+                .live-positions-text-red {
+                    color: #dc2626;
+                }
+
+                .live-positions-text-green {
+                    color: #16a34a;
+                }
+
+                .live-positions-clickable {
+                    cursor: pointer;
+                    transition: color 0.2s ease;
+                }
+
+                .live-positions-clickable:hover {
+                    color: #2563eb;
+                }
+
+                .live-positions-dropdown {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    margin-top: 0.5rem;
+                    background: white;
+                    border-radius: 0.75rem;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    border: 1px solid #e5e7eb;
+                    z-index: 10;
+                    padding: 1rem;
+                    display: none;
+                }
+
+                .live-positions-dropdown.show {
+                    display: block;
+                }
+
+                .live-positions-dropdown-title {
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    color: #374151;
+                    margin-bottom: 0.75rem;
+                }
+
+                .live-positions-account-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .live-positions-account-name {
+                    color: #6b7280;
+                }
+
+                .live-positions-account-details {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                .live-positions-account-price {
+                    color: #111827;
+                }
+
+                .live-positions-variance {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                }
+
+                .live-positions-variance.positive {
+                    color: #16a34a;
+                }
+
+                .live-positions-variance.negative {
+                    color: #dc2626;
+                }
+
+                .live-positions-current-info {
+                    font-size: 0.875rem;
+                    color: #9ca3af;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                .live-positions-indicator {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    border-radius: 50%;
+                }
+
+                .live-positions-indicator.up {
+                    background-color: #4ade80;
+                }
+
+                .live-positions-indicator.down {
+                    background-color: #f87171;
+                }
+
+                .live-positions-position-size {
+                    font-weight: 700;
+                }
+
+                .live-positions-button-container {
+                    display: flex;
+                    gap: 1rem;
+                    margin-top: 1.5rem;
+                }
+
+                .live-positions-action-button {
+                    flex: 1;
+                    padding: 0.875rem 1.5rem;
+                    border: none;
+                    border-radius: 0.5rem;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 0.025em;
+                }
+
+                .live-positions-cancel-button {
+                    background-color: #6b7280;
+                    color: white;
+                }
+
+                .live-positions-cancel-button:hover {
+                    background-color: #4b5563;
+                    transform: translateY(-1px);
+                }
+
+                .live-positions-flatten-button {
+                    background-color: #6b7280;
+                    color: white;
+                }
+
+                .live-positions-flatten-button:hover {
+                    background-color: #4b5563;
+                    transform: translateY(-1px);
+                }
+
+                .live-positions-action-button:active {
+                    transform: translateY(0);
+                }
+
+                .live-positions-account-pnl-list {
+                    margin-top: 1rem;
+                    padding-top: 0.75rem;
+                    border-top: 1px solid #f3f4f6;
+                }
+
+                .live-positions-account-pnl-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 0.75rem;
+                    margin-bottom: 0.25rem;
+                    line-height: 1.2;
+                }
+
+                .live-positions-account-pnl-name {
+                    color: #9ca3af;
+                    font-weight: 400;
+                    flex: 1;
+                }
+
+                .live-positions-account-pnl-value {
+                    font-weight: 500;
+                    color: #111827;
+                    text-align: right;
+                }
+            </style>
+
+            <div class="live-positions-container">
+                
+                <!-- Account Selection Dropdown -->
+                <div class="live-positions-account-selector">
+                    <label for="accountSelect" class="account-selector-label">Select Account:</label>
+                    <select id="accountSelect" class="account-selector-dropdown">
+                        <option value="BX-M54697031751">BX-M54697031751 (A) $8K-5K</option>
+                        <option value="BX-M54697031655">BX-M54697031655 (B) LOOK OUT DO NOT TOUCH PAYOUT</option>
+                        <option value="BX-M54697031757">BX-M54697031757 (E) 1 PAYOUT</option>
+                        <option value="BX-M54697031850">BX-M54697031850 (F) 2HG</option>
+                        <option value="BX-M54697031709">BX-M54697031709 (G) 2HG</option>
+                    </select>
+                </div>
+                
+                <!-- Top Row - 2 Boxes -->
+                <div class="live-positions-grid live-positions-grid-cols-2">
+                    
+                    <!-- Position Info (Top Left) -->
+                    <div class="live-positions-card">
+                        <div class="live-positions-card-label">Long Position</div>
+                        <div class="live-positions-card-value">
+                            <span class="live-positions-position-size">3</span> NQ
+                        </div>
+                    </div>
+
+                    <!-- Entry Price (Top Right) -->
+                    <div class="live-positions-card">
+                        <div class="live-positions-card-label">Entry Price</div>
+                        <div class="live-positions-card-value live-positions-clickable" id="entryPrice">
+                            22,650
+                        </div>
+                        
+                        <!-- Account Details Dropdown -->
+                        <div class="live-positions-dropdown" id="accountDropdown">
+                            <div class="live-positions-dropdown-title">Account Entries</div>
+                            <div id="accountList">
+                                <div class="live-positions-account-row">
+                                    <span class="live-positions-account-name">(A) $8K-5K (BX-M54697031751):</span>
+                                    <div class="live-positions-account-details">
+                                        <span class="live-positions-account-price">22,648</span>
+                                        <span class="live-positions-variance negative">-2</span>
+                                    </div>
+                                </div>
+                                <div class="live-positions-account-row">
+                                    <span class="live-positions-account-name">(B) LOOK OUT DO NOT TOUCH PAYOUT (BX-M54697031655):</span>
+                                    <div class="live-positions-account-details">
+                                        <span class="live-positions-account-price">22,651</span>
+                                        <span class="live-positions-variance positive">+1</span>
+                                    </div>
+                                </div>
+                                <div class="live-positions-account-row">
+                                    <span class="live-positions-account-name">(E) 1 PAYOUT (BX-M54697031757):</span>
+                                    <div class="live-positions-account-details">
+                                        <span class="live-positions-account-price">22,649</span>
+                                        <span class="live-positions-variance negative">-1</span>
+                                    </div>
+                                </div>
+                                <div class="live-positions-account-row">
+                                    <span class="live-positions-account-name">(F) 2HG (BX-M54697031850):</span>
+                                    <div class="live-positions-account-details">
+                                        <span class="live-positions-account-price">22,653</span>
+                                        <span class="live-positions-variance positive">+3</span>
+                                    </div>
+                                </div>
+                                <div class="live-positions-account-row">
+                                    <span class="live-positions-account-name">(G) 2HG (BX-M54697031709):</span>
+                                    <div class="live-positions-account-details">
+                                        <span class="live-positions-account-price">22,652</span>
+                                        <span class="live-positions-variance positive">+2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Middle Row - 2 Boxes -->
+                <div class="live-positions-grid live-positions-grid-cols-2">
+
+                    <!-- Stop Loss -->
+                    <div class="live-positions-card">
+                        <div class="live-positions-card-label">Stop Loss</div>
+                        <div class="live-positions-card-value live-positions-text-red">
+                            22,580
+                        </div>
+                    </div>
+
+                    <!-- Take Profit -->
+                    <div class="live-positions-card">
+                        <div class="live-positions-card-label">Take Profit</div>
+                        <div class="live-positions-card-value live-positions-text-green">
+                            22,750
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Row - 1 Box (Full Width) -->
+                <div class="live-positions-grid live-positions-grid-cols-1">
+
+                    <!-- Unrealized P&L -->
+                    <div class="live-positions-card">
+                        <div class="live-positions-card-label">Unrealized P&L</div>
+                        <div class="live-positions-card-value live-positions-card-value-large" id="pnlValue">
+                            +$1,680.00
+                        </div>
+                        <div class="live-positions-current-info">
+                            Current: <span id="currentPrice">22,678</span>
+                            <div class="live-positions-indicator up" id="priceIndicator"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action Buttons Row -->
+                <div class="live-positions-button-container">
+                    <button class="live-positions-action-button live-positions-cancel-button" id="cancelAllBtn">
+                        Cancel All
+                    </button>
+                    <button class="live-positions-action-button live-positions-flatten-button" id="flattenAllBtn">
+                        Flatten All
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="risk-settings-content" class="main-content" style="display: none;">
+            <div class="content-header">
+                <h2 class="content-title">Risk Settings</h2>
+            </div>
+            
+            <!-- Bulenox Accounts -->
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697011751</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $72,272.04
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697031655</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $86,957.06
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697031757</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $51,859.38
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697041958</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $50,334.88
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697061751D</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $246,552.2
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697051759</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $51,733.8
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TopStep Accounts -->
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-147258963</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $125,890.50
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-963852741</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $89,432.18
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-741852963</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $67,205.74
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-258741963</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $54,120.32
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-852963741</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $43,890.15
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alpha Futures Accounts -->
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">AF-789456123</div>
+                        <div class="risk-firm-name">Alpha Futures</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $98,765.43
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">AF-456123789</div>
+                        <div class="risk-firm-name">Alpha Futures</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $76,543.21
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">AF-123789456</div>
+                        <div class="risk-firm-name">Alpha Futures</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $65,432.10
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content sections
+            document.getElementById('copy-trade-content').style.display = 'none';
+            document.getElementById('trade-history-content').style.display = 'none';
+            document.getElementById('live-positions-content').style.display = 'none';
+            document.getElementById('manage-firms-content').style.display = 'none';
+            document.getElementById('risk-settings-content').style.display = 'none';
+            
+            // Show selected content
+            document.getElementById(tabName + '-content').style.display = 'block';
+            
+            // Update tab styles
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                tab.classList.add('inactive');
+            });
+            
+            // Set active tab
+            event.target.classList.remove('inactive');
+            event.target.classList.add('active');
+        }
+
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+        }
+
+        function clearAllToggles() {
+            const toggles = document.querySelectorAll('.toggle-switch');
+            toggles.forEach(toggle => {
+                toggle.classList.remove('active');
+            });
+        }
+
+        function selectLeaderAccount(accountId) {
+            const followerSection = document.getElementById('follower-accounts-section');
+            
+            if (accountId && accountId !== '') {
+                // Show the follower accounts section when a leader is selected
+                followerSection.style.display = 'block';
+                
+                // Update the follower accounts section title to show selected leader
+                const selectedOption = document.querySelector(`#leader-account-dropdown option[value="${accountId}"]`);
+                const leaderDisplay = selectedOption ? selectedOption.textContent : accountId;
+                
+                // You can add logic here to filter follower accounts based on selected leader
+                // For now, we'll show all accounts
+                console.log('Selected Leader Account:', leaderDisplay);
+            } else {
+                // Hide the follower accounts section if no leader is selected
+                followerSection.style.display = 'none';
+            }
+        }
+
+        function toggleFirm(element) {
+            const firmCard = element.closest('.firm-card');
+            const expandedContent = firmCard.querySelector('.firm-expanded-content');
+            const arrow = element.querySelector('.dropdown-arrow');
+            
+            if (expandedContent.classList.contains('show')) {
+                expandedContent.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                expandedContent.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+
+        function toggleRiskAccount(element) {
+            const accountItem = element.closest('.risk-account-item');
+            const content = accountItem.querySelector('.risk-account-content');
+            const arrow = element.querySelector('.risk-dropdown-arrow');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                content.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+
+        function toggleAccount(element) {
+            const accountItem = element.closest('.account-item');
+            const content = accountItem.querySelector('.account-expanded-content');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+            } else {
+                content.classList.add('show');
+            }
+        }
+
+        // Live Positions Dashboard functionality
+        let livePositionsInitialized = false;
+        
+        function initializeLivePositions() {
+            if (livePositionsInitialized) return;
+            
+            // Trading data
+            const trade = {
+                entryPrice: 22650,
+                takeProfit: 22750,
+                stopLoss: 22580,
+                positionSize: 3,
+                direction: "Long"
+            };
+
+            let currentPrice = 22678;
+            let isIncreasing = true;
+            let showAccountDetails = false;
+
+            // DOM elements
+            const entryPriceEl = document.getElementById('entryPrice');
+            const accountDropdown = document.getElementById('accountDropdown');
+            const pnlValueEl = document.getElementById('pnlValue');
+            const currentPriceEl = document.getElementById('currentPrice');
+            const priceIndicator = document.getElementById('priceIndicator');
+            const cancelAllBtn = document.getElementById('cancelAllBtn');
+            const flattenAllBtn = document.getElementById('flattenAllBtn');
+            const accountSelect = document.getElementById('accountSelect');
+
+            if (!entryPriceEl || !accountDropdown || !pnlValueEl || !currentPriceEl || !priceIndicator || !cancelAllBtn || !flattenAllBtn || !accountSelect) {
+                return; // Elements not found, exit
+            }
+
+            // Button click handlers
+            cancelAllBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to cancel all orders?')) {
+                    alert('All orders have been cancelled');
+                }
+            });
+
+            flattenAllBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to flatten all positions?')) {
+                    alert('All positions have been flattened');
+                }
+            });
+
+            // Account selection handler
+            accountSelect.addEventListener('change', (e) => {
+                const selectedAccount = e.target.value;
+                console.log('Selected account:', selectedAccount);
+                // Update dashboard based on selected account
+                // For now, this just logs the selection - could be extended to show different data per account
+            });
+
+            // Toggle account details dropdown
+            entryPriceEl.addEventListener('click', () => {
+                showAccountDetails = !showAccountDetails;
+                accountDropdown.classList.toggle('show', showAccountDetails);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!entryPriceEl.contains(e.target) && !accountDropdown.contains(e.target)) {
+                    showAccountDetails = false;
+                    accountDropdown.classList.remove('show');
+                }
+            });
+
+            // Calculate and update P&L
+            function updatePnL() {
+                const unrealizedPnL = (currentPrice - trade.entryPrice) * trade.positionSize * 20; // NQ = $20 per point
+                const isPositive = unrealizedPnL >= 0;
+                
+                pnlValueEl.textContent = `${isPositive ? '+' : ''}$${Math.abs(unrealizedPnL).toFixed(2)}`;
+                pnlValueEl.className = `live-positions-card-value live-positions-card-value-large ${isPositive ? 'live-positions-text-green' : 'live-positions-text-red'}`;
+                
+                currentPriceEl.textContent = currentPrice.toLocaleString();
+                priceIndicator.className = `live-positions-indicator ${isIncreasing ? 'up' : 'down'}`;
+
+                // Calculate individual follower account P&Ls based on the leader's P&L (big bento box)
+                // Leader P&L is the main unrealizedPnL, followers should be very similar with small variations
+                const leaderPnL = unrealizedPnL; // This is the big bento box P&L (leader account)
+                const accountVariances = [
+                    { id: 'pnlA', variance: -15 }, // Account A: $15 worse than leader
+                    { id: 'pnlB', variance: +12 }, // Account B: $12 better than leader
+                    { id: 'pnlE', variance: -8 }, // Account E: $8 worse than leader
+                    { id: 'pnlF', variance: +18 }, // Account F: $18 better than leader
+                    { id: 'pnlG', variance: +5 }  // Account G: $5 better than leader
+                ];
+
+                accountVariances.forEach(account => {
+                    // Each follower account P&L is very close to leader P&L with small variance
+                    const accountPnL = leaderPnL + account.variance;
+                    const accountIsPositive = accountPnL >= 0;
+                    const accountPnLEl = document.getElementById(account.id);
+                    
+                    if (accountPnLEl) {
+                        accountPnLEl.textContent = `${accountIsPositive ? '+' : ''}$${Math.abs(accountPnL).toFixed(2)}`;
+                        accountPnLEl.className = `live-positions-account-pnl-value ${accountIsPositive ? 'live-positions-text-green' : 'live-positions-text-red'}`;
+                    }
+                });
+            }
+
+            // Simulate live price updates
+            function updatePrice() {
+                const change = (Math.random() - 0.5) * 15; // NQ can move more volatilely
+                const newPrice = currentPrice + change;
+                currentPrice = Math.max(22400, Math.min(22900, newPrice));
+                isIncreasing = change > 0;
+                
+                updatePnL();
+            }
+
+            // Initial update
+            updatePnL();
+
+            // Start price updates
+            const priceUpdateInterval = setInterval(updatePrice, 1500);
+
+            // Store interval ID for cleanup
+            window.livePositionsPriceInterval = priceUpdateInterval;
+            
+            livePositionsInitialized = true;
+        }
+
+        // Override the showTab function to initialize live positions when tab is shown
+        const originalShowTab = showTab;
+        showTab = function(tabName) {
+            originalShowTab.call(this, tabName);
+            
+            if (tabName === 'live-positions') {
+                // Initialize live positions dashboard when tab is shown
+                setTimeout(initializeLivePositions, 100);
+            }
+        };
+
+        // Modal functions
+        function openTradeModal() {
+            document.getElementById('tradeModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeTradeModal() {
+            document.getElementById('tradeModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside the modal content
+        document.getElementById('tradeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTradeModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTradeModal();
+            }
+        });
+
+        // Toggle individual account details
+        function toggleAccountDetails(element) {
+            const accountDetails = element.querySelector('.account-details');
+            const isExpanded = element.classList.contains('expanded');
+            
+            if (isExpanded) {
+                element.classList.remove('expanded');
+                accountDetails.style.display = 'none';
+            } else {
+                element.classList.add('expanded');
+                accountDetails.style.display = 'block';
+            }
+        }
+
+        // Mobile Navigation Functions
+        function toggleMobileNav() {
+            const toggle = document.querySelector('.mobile-nav-toggle');
+            const menu = document.getElementById('mobile-nav-menu');
+            
+            toggle.classList.toggle('open');
+            menu.classList.toggle('show');
+        }
+
+        function showTabMobile(tabName) {
+            // Close mobile menu
+            const toggle = document.querySelector('.mobile-nav-toggle');
+            const menu = document.getElementById('mobile-nav-menu');
+            toggle.classList.remove('open');
+            menu.classList.remove('show');
+            
+            // Update mobile nav label
+            const label = document.getElementById('mobile-nav-label');
+            const tabNames = {
+                'copy-trade': 'Copy Trader',
+                'trade-history': 'Trade History',
+                'live-positions': 'Live Positions',
+                'manage-firms': 'Manage Firms',
+                'risk-settings': 'Risk Settings'
+            };
+            label.textContent = tabNames[tabName] || 'Navigation';
+            
+            // Update active mobile nav item
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Find and activate the corresponding mobile nav item
+            const targetItem = Array.from(mobileNavItems).find(item => 
+                item.getAttribute('onclick').includes(tabName)
+            );
+            if (targetItem) {
+                targetItem.classList.add('active');
+            }
+            
+            // Call the original showTab function
+            showTab(tabName);
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileNavDropdown = document.querySelector('.mobile-nav-dropdown');
+            const menu = document.getElementById('mobile-nav-menu');
+            
+            if (mobileNavDropdown && !mobileNavDropdown.contains(e.target)) {
+                const toggle = document.querySelector('.mobile-nav-toggle');
+                toggle.classList.remove('open');
+                menu.classList.remove('show');
+            }
+        });
+    </script>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>
