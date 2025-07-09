@@ -658,6 +658,64 @@
             min-width: 140px;
         }
 
+        /* Leader Tag Styles */
+        .account-leader .account-header {
+            position: relative;
+        }
+
+        .leader-tag {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .leader-tag-text {
+            white-space: nowrap;
+        }
+
+
+        /* Follower Account Overlay Styles */
+        .account-follower {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .follower-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(251, 191, 36, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+        }
+
+        .follower-overlay-text {
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+        }
+
         @media (max-width: 768px) {
             .dashboard {
                 flex-direction: column;
@@ -2133,8 +2191,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-leader">
                         <div class="account-header" onclick="toggleAccount(this)">
+                            <div class="leader-tag">
+                                <span class="leader-tag-text">Firm Leader +2</span>
+                            </div>
                             <span class="account-name">(E) 1 PAYOUT (BX-M54697031757)</span>
                             <div class="account-controls">
                                 <div class="sizing-input-container">
@@ -2153,7 +2214,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">(F) 2HG (BX-M54697031850)</span>
                             <div class="account-controls">
@@ -2173,7 +2237,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">(G) 2HG (BX-M54697031709)</span>
                             <div class="account-controls">
@@ -5266,6 +5333,8 @@
         function selectLeaderAccount(accountId) {
             const followerSection = document.getElementById('follower-accounts-section');
             
+            console.log('selectLeaderAccount called with:', accountId);
+            
             if (accountId && accountId !== '') {
                 // Show the follower accounts section when a leader is selected
                 followerSection.style.display = 'block';
@@ -5274,13 +5343,75 @@
                 const selectedOption = document.querySelector(`#leader-account-dropdown option[value="${accountId}"]`);
                 const leaderDisplay = selectedOption ? selectedOption.textContent : accountId;
                 
-                // You can add logic here to filter follower accounts based on selected leader
-                // For now, we'll show all accounts
+                // Filter follower accounts - hide the selected leader account
+                filterFollowerAccounts(accountId);
+                
                 console.log('Selected Leader Account:', leaderDisplay);
+                console.log('Filtering complete');
             } else {
                 // Hide the follower accounts section if no leader is selected
                 followerSection.style.display = 'none';
+                
+                // Show all accounts when no leader is selected
+                showAllFollowerAccounts();
+                console.log('No leader selected, showing all accounts');
             }
+        }
+
+        function filterFollowerAccounts(leaderAccountId) {
+            console.log('filterFollowerAccounts called with leaderAccountId:', leaderAccountId);
+            
+            // First, show all accounts to reset the state
+            showAllFollowerAccounts();
+            
+            // Get all account items in the follower section
+            const accountItems = document.querySelectorAll('#follower-accounts-section .account-item');
+            console.log('Found', accountItems.length, 'account items');
+            
+            let hiddenCount = 0;
+            
+            accountItems.forEach(item => {
+                const accountName = item.querySelector('.account-name');
+                if (accountName) {
+                    const accountText = accountName.textContent;
+                    
+                    // Extract account ID - handle different formats:
+                    // Format 1: "(A) $8K-5K (BX-M54697031751)" -> extract "BX-M54697031751"
+                    // Format 2: "TS-147258963 ($125,890.50)" -> extract "TS-147258963"
+                    let extractedAccountId = '';
+                    
+                    // Check if account text contains account ID in parentheses (BX-, TS-, AF-)
+                    const accountIdInParenMatch = accountText.match(/\(([A-Z]{2}-[^)]+)\)/);
+                    if (accountIdInParenMatch) {
+                        extractedAccountId = accountIdInParenMatch[1];
+                    } else {
+                        // Check if account text starts with account ID pattern (TS-, AF-, BX-)
+                        const accountIdStartMatch = accountText.match(/^([A-Z]{2}-[A-Z0-9]+)/);
+                        if (accountIdStartMatch) {
+                            extractedAccountId = accountIdStartMatch[1];
+                        }
+                    }
+                    
+                    console.log('Account:', accountText, '-> Extracted ID:', extractedAccountId);
+                    
+                    if (extractedAccountId === leaderAccountId) {
+                        // Hide the account that matches the selected leader
+                        item.style.display = 'none';
+                        hiddenCount++;
+                        console.log('HIDDEN:', accountText);
+                    }
+                }
+            });
+            
+            console.log('Total accounts hidden:', hiddenCount);
+        }
+
+        function showAllFollowerAccounts() {
+            // Show all account items when no leader is selected
+            const accountItems = document.querySelectorAll('#follower-accounts-section .account-item');
+            accountItems.forEach(item => {
+                item.style.display = 'block';
+            });
         }
 
         function toggleFirm(element) {
