@@ -659,7 +659,8 @@
         }
 
         /* Leader Tag Styles */
-        .account-leader .account-header {
+        .account-leader .account-header,
+        .account-leader .risk-account-header {
             position: relative;
         }
 
@@ -2151,46 +2152,6 @@
                 
                 <div class="account-list">
                     <div class="firm-section-header">Bulenox</div>
-                    <div class="account-item">
-                        <div class="account-header" onclick="toggleAccount(this)">
-                            <span class="account-name">(A) $8K-5K (BX-M54697031751)</span>
-                            <div class="account-controls">
-                                <div class="sizing-input-container">
-                                    <span class="sizing-label">Sizing:</span>
-                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
-                                </div>
-                                <div class="toggle-switch active" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
-                            </div>
-                        </div>
-                        <div class="account-expanded-content">
-                            <div class="dashboard">
-                                <div class="dashboard-box">BAL: $57,001.04</div>
-                                <div class="dashboard-box">DMLL: $6,901.04</div>
-                                <div class="dashboard-box">RP&L: $0.00</div>
-                                <div class="dashboard-box">UP&L: $0.00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="account-item">
-                        <div class="account-header" onclick="toggleAccount(this)">
-                            <span class="account-name">(B) LOOK OUT DO NOT TOUCH PAYOUT (BX-M54697031655)</span>
-                            <div class="account-controls">
-                                <div class="sizing-input-container">
-                                    <span class="sizing-label">Sizing:</span>
-                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
-                                </div>
-                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
-                            </div>
-                        </div>
-                        <div class="account-expanded-content">
-                            <div class="dashboard">
-                                <div class="dashboard-box">BAL: $57,001.04</div>
-                                <div class="dashboard-box">DMLL: $6,901.04</div>
-                                <div class="dashboard-box">RP&L: $0.00</div>
-                                <div class="dashboard-box">UP&L: $0.00</div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="account-item account-leader">
                         <div class="account-header" onclick="toggleAccount(this)">
                             <div class="leader-tag">
@@ -2260,8 +2221,74 @@
                             </div>
                         </div>
                     </div>
-                    <div class="firm-section-header">TopStep</div>
                     <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(A) $8K-5K (BX-M54697031751)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch active" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <span class="account-name">(B) LOOK OUT DO NOT TOUCH PAYOUT (BX-M54697031655)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="firm-section-header">TopStep</div>
+                    <div class="account-item account-leader">
+                        <div class="account-header" onclick="toggleAccount(this)">
+                            <div class="leader-tag">
+                                <span class="leader-tag-text">Firm Leader +2</span>
+                            </div>
+                            <span class="account-name">TS-963852741 ($89,432.18)</span>
+                            <div class="account-controls">
+                                <div class="sizing-input-container">
+                                    <span class="sizing-label">Sizing:</span>
+                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
+                                </div>
+                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
+                            </div>
+                        </div>
+                        <div class="account-expanded-content">
+                            <div class="dashboard">
+                                <div class="dashboard-box">BAL: $57,001.04</div>
+                                <div class="dashboard-box">DMLL: $6,901.04</div>
+                                <div class="dashboard-box">RP&L: $0.00</div>
+                                <div class="dashboard-box">UP&L: $0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">TS-147258963 ($125,890.50)</span>
                             <div class="account-controls">
@@ -2281,27 +2308,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
-                        <div class="account-header" onclick="toggleAccount(this)">
-                            <span class="account-name">TS-963852741 ($89,432.18)</span>
-                            <div class="account-controls">
-                                <div class="sizing-input-container">
-                                    <span class="sizing-label">Sizing:</span>
-                                    <input type="text" class="sizing-input" onclick="event.stopPropagation()">
-                                </div>
-                                <div class="toggle-switch" onclick="event.stopPropagation(); toggleSwitch(this)"></div>
-                            </div>
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
                         </div>
-                        <div class="account-expanded-content">
-                            <div class="dashboard">
-                                <div class="dashboard-box">BAL: $57,001.04</div>
-                                <div class="dashboard-box">DMLL: $6,901.04</div>
-                                <div class="dashboard-box">RP&L: $0.00</div>
-                                <div class="dashboard-box">UP&L: $0.00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="account-item">
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">TS-741852963 ($67,205.74)</span>
                             <div class="account-controls">
@@ -2321,7 +2331,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">TS-258741963 ($54,120.32)</span>
                             <div class="account-controls">
@@ -2341,7 +2354,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">TS-852963741 ($43,890.15)</span>
                             <div class="account-controls">
@@ -2362,8 +2378,11 @@
                         </div>
                     </div>
                     <div class="firm-section-header">Alpha Futures</div>
-                    <div class="account-item">
+                    <div class="account-item account-leader">
                         <div class="account-header" onclick="toggleAccount(this)">
+                            <div class="leader-tag">
+                                <span class="leader-tag-text">Firm Leader +2</span>
+                            </div>
                             <span class="account-name">AF-789456123 ($98,765.43)</span>
                             <div class="account-controls">
                                 <div class="sizing-input-container">
@@ -2382,7 +2401,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">AF-456123789 ($76,543.21)</span>
                             <div class="account-controls">
@@ -2402,7 +2424,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="account-item">
+                    <div class="account-item account-follower">
+                        <div class="follower-overlay">
+                            <div class="follower-overlay-text">Follower Account</div>
+                        </div>
                         <div class="account-header" onclick="toggleAccount(this)">
                             <span class="account-name">AF-123789456 ($65,432.10)</span>
                             <div class="account-controls">
@@ -4129,174 +4154,12 @@
             </div>
             
             <!-- Bulenox Accounts -->
-            <div class="risk-account-item">
+            <div class="firm-section-header">Bulenox</div>
+            <div class="risk-account-item account-leader">
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
-                    <div class="risk-account-info">
-                        <div class="risk-account-number">BX-M54697011751</div>
-                        <div class="risk-firm-name">Bulenox</div>
+                    <div class="leader-tag">
+                        <span class="leader-tag-text">Firm Leader +2</span>
                     </div>
-                    <div class="risk-account-balance">
-                        $72,272.04
-                        <div class="risk-dropdown-arrow"></div>
-                    </div>
-                </div>
-                <div class="risk-account-content">
-                    <div class="dashboard">
-                        <div class="dashboard-box">BAL: $57,001.04</div>
-                        <div class="dashboard-box">DMLL: $6,901.04</div>
-                        <div class="dashboard-box">RP&L: $0.00</div>
-                        <div class="dashboard-box">UP&L: $0.00</div>
-                    </div>
-                    <div class="risk-settings-grid">
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Loss Limit (PDLL)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 3000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDLL Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-
-                            <div class="trade-limits-section">
-                                <div class="trade-limits-title">
-                                    Trade Limits
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
-                                    <input type="text" class="risk-input" value="13">
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
-                                    <input type="text" class="risk-input" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Profit Target (PDPT)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 10000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDPT Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="risk-account-item">
-                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
-                    <div class="risk-account-info">
-                        <div class="risk-account-number">BX-M54697031655</div>
-                        <div class="risk-firm-name">Bulenox</div>
-                    </div>
-                    <div class="risk-account-balance">
-                        $86,957.06
-                        <div class="risk-dropdown-arrow"></div>
-                    </div>
-                </div>
-                <div class="risk-account-content">
-                    <div class="dashboard">
-                        <div class="dashboard-box">BAL: $57,001.04</div>
-                        <div class="dashboard-box">DMLL: $6,901.04</div>
-                        <div class="dashboard-box">RP&L: $0.00</div>
-                        <div class="dashboard-box">UP&L: $0.00</div>
-                    </div>
-                    <div class="risk-settings-grid">
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Loss Limit (PDLL)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 3000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDLL Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-
-                            <div class="trade-limits-section">
-                                <div class="trade-limits-title">
-                                    Trade Limits
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
-                                    <input type="text" class="risk-input" value="13">
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
-                                    <input type="text" class="risk-input" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Profit Target (PDPT)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 10000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDPT Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="risk-account-item">
-                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">BX-M54697031757</div>
                         <div class="risk-firm-name">Bulenox</div>
@@ -4378,7 +4241,158 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697031850</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $57,001.04
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697041958</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $50,334.88
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" value="50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">BX-M54697041958</div>
@@ -4547,6 +4561,252 @@
             <div class="risk-account-item">
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697011751</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $72,272.04
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697031655</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $86,957.06
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">BX-M54697061751D</div>
+                        <div class="risk-firm-name">Bulenox</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $246,552.2
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="risk-account-info">
                         <div class="risk-account-number">BX-M54697051759</div>
                         <div class="risk-firm-name">Bulenox</div>
                     </div>
@@ -4628,7 +4888,97 @@
             </div>
 
             <!-- TopStep Accounts -->
-            <div class="risk-account-item">
+            <div class="firm-section-header">TopStep</div>
+            <div class="risk-account-item account-leader">
+                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="leader-tag">
+                        <span class="leader-tag-text">Firm Leader +2</span>
+                    </div>
+                    <div class="risk-account-info">
+                        <div class="risk-account-number">TS-963852741</div>
+                        <div class="risk-firm-name">Topstep</div>
+                    </div>
+                    <div class="risk-account-balance">
+                        $89,432.18
+                        <div class="risk-dropdown-arrow"></div>
+                    </div>
+                </div>
+                <div class="risk-account-content">
+                    <div class="dashboard">
+                        <div class="dashboard-box">BAL: $57,001.04</div>
+                        <div class="dashboard-box">DMLL: $6,901.04</div>
+                        <div class="dashboard-box">RP&L: $0.00</div>
+                        <div class="dashboard-box">UP&L: $0.00</div>
+                    </div>
+                    <div class="risk-settings-grid">
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Loss Limit (PDLL)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 3000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDLL Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+
+                            <div class="trade-limits-section">
+                                <div class="trade-limits-title">
+                                    Trade Limits
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
+                                    <input type="text" class="risk-input" value="13">
+                                </div>
+                                <div class="risk-field">
+                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
+                                    <input type="text" class="risk-input" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="risk-section">
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    Personal Daily Profit Target (PDPT)
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <input type="text" class="risk-input" value="$ 10000">
+                            </div>
+                            
+                            <div class="risk-field">
+                                <div class="risk-label">
+                                    PDPT Action
+                                    <div class="risk-info-icon">?</div>
+                                </div>
+                                <select class="risk-select">
+                                    <option>Do Nothing</option>
+                                    <option>Stop Trading</option>
+                                    <option>Close Positions</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">TS-147258963</div>
@@ -4711,90 +5061,10 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
-                <div class="risk-account-header" onclick="toggleRiskAccount(this)">
-                    <div class="risk-account-info">
-                        <div class="risk-account-number">TS-963852741</div>
-                        <div class="risk-firm-name">Topstep</div>
-                    </div>
-                    <div class="risk-account-balance">
-                        $89,432.18
-                        <div class="risk-dropdown-arrow"></div>
-                    </div>
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
                 </div>
-                <div class="risk-account-content">
-                    <div class="dashboard">
-                        <div class="dashboard-box">BAL: $57,001.04</div>
-                        <div class="dashboard-box">DMLL: $6,901.04</div>
-                        <div class="dashboard-box">RP&L: $0.00</div>
-                        <div class="dashboard-box">UP&L: $0.00</div>
-                    </div>
-                    <div class="risk-settings-grid">
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Loss Limit (PDLL)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 3000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDLL Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-
-                            <div class="trade-limits-section">
-                                <div class="trade-limits-title">
-                                    Trade Limits
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Day</div>
-                                    <input type="text" class="risk-input" value="13">
-                                </div>
-                                <div class="risk-field">
-                                    <div class="trade-limits-subtitle">Maximum Trades per Week</div>
-                                    <input type="text" class="risk-input" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="risk-section">
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    Personal Daily Profit Target (PDPT)
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <input type="text" class="risk-input" value="$ 10000">
-                            </div>
-                            
-                            <div class="risk-field">
-                                <div class="risk-label">
-                                    PDPT Action
-                                    <div class="risk-info-icon">?</div>
-                                </div>
-                                <select class="risk-select">
-                                    <option>Do Nothing</option>
-                                    <option>Stop Trading</option>
-                                    <option>Close Positions</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="risk-account-item">
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">TS-741852963</div>
@@ -4877,7 +5147,10 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">TS-258741963</div>
@@ -4960,7 +5233,10 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">TS-852963741</div>
@@ -5044,8 +5320,12 @@
             </div>
 
             <!-- Alpha Futures Accounts -->
-            <div class="risk-account-item">
+            <div class="firm-section-header">Alpha Futures</div>
+            <div class="risk-account-item account-leader">
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
+                    <div class="leader-tag">
+                        <span class="leader-tag-text">Firm Leader +2</span>
+                    </div>
                     <div class="risk-account-info">
                         <div class="risk-account-number">AF-789456123</div>
                         <div class="risk-firm-name">Alpha Futures</div>
@@ -5127,7 +5407,10 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">AF-456123789</div>
@@ -5210,7 +5493,10 @@
                 </div>
             </div>
 
-            <div class="risk-account-item">
+            <div class="risk-account-item account-follower">
+                <div class="follower-overlay">
+                    <div class="follower-overlay-text">Follower Account</div>
+                </div>
                 <div class="risk-account-header" onclick="toggleRiskAccount(this)">
                     <div class="risk-account-info">
                         <div class="risk-account-number">AF-123789456</div>
