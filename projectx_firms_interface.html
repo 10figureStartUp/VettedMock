@@ -2089,10 +2089,11 @@
 
         <nav class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('copy-trade')">Copy Trader</button>
-            <button class="nav-tab inactive" onclick="showTab('trade-history')">Trade History</button>
-            <button class="nav-tab inactive" onclick="showTab('live-positions')">Live Positions</button>
-            <button class="nav-tab inactive" onclick="showTab('manage-firms')">Manage Firms</button>
             <button class="nav-tab inactive" onclick="showTab('risk-settings')">Risk Settings</button>
+            <button class="nav-tab inactive" onclick="showTab('live-positions')">Live Positions</button>
+            <button class="nav-tab inactive" onclick="showTab('live-positions-2')">Orders</button>
+            <button class="nav-tab inactive" onclick="showTab('trade-history')">Trade History</button>
+            <button class="nav-tab inactive" onclick="showTab('manage-firms')">Manage Firms</button>
         </nav>
 
         <!-- Mobile Navigation Dropdown -->
@@ -2103,10 +2104,11 @@
             </button>
             <div class="mobile-nav-menu" id="mobile-nav-menu">
                 <button class="mobile-nav-item active" onclick="showTabMobile('copy-trade')">Copy Trader</button>
-                <button class="mobile-nav-item" onclick="showTabMobile('trade-history')">Trade History</button>
-                <button class="mobile-nav-item" onclick="showTabMobile('live-positions')">Live Positions</button>
-                <button class="mobile-nav-item" onclick="showTabMobile('manage-firms')">Manage Firms</button>
                 <button class="mobile-nav-item" onclick="showTabMobile('risk-settings')">Risk Settings</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('live-positions')">Live Positions</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('live-positions-2')">Orders</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('trade-history')">Trade History</button>
+                <button class="mobile-nav-item" onclick="showTabMobile('manage-firms')">Manage Firms</button>
             </div>
         </div>
 
@@ -3642,219 +3644,6 @@
 
                         </div>
 
-                        <!-- Active Orders Section -->
-                        <div class="active-orders-section">
-                            <div class="active-orders-header">
-                                <h3 class="active-orders-title">Active Orders - NQ</h3>
-                            </div>
-                            <div class="orders-table-container">
-                                <!-- Desktop Table View -->
-                                <table class="orders-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Time</th>
-                                            <th>Symbol</th>
-                                            <th>Size</th>
-                                            <th>Order Type</th>
-                                            <th>Limit Price</th>
-                                            <th>Stop Price</th>
-                                            <th>Execute Price</th>
-                                            <th>Status</th>
-                                            <th>Cancel</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>2025-07-08 08:13:47.606</td>
-                                            <td>/NQ</td>
-                                            <td>3</td>
-                                            <td><span class="order-type sell">Sell</span></td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>22,650.00</td>
-                                            <td><span class="status filled">Filled</span></td>
-                                            <td>-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>2025-07-08 08:13:47.628</td>
-                                            <td>/NQ</td>
-                                            <td>3</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>-</td>
-                                            <td>22,580.00</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>2025-07-08 08:13:47.628</td>
-                                            <td>/NQ</td>
-                                            <td>3</td>
-                                            <td><span class="order-type sell">Sell</span></td>
-                                            <td>22,750.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>2025-07-08 05:42:25.941</td>
-                                            <td>/NQ</td>
-                                            <td>1</td>
-                                            <td><span class="order-type sell">Sell</span></td>
-                                            <td>22,800.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5.</td>
-                                            <td>2025-07-08 05:42:25.964</td>
-                                            <td>/NQ</td>
-                                            <td>2</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>22,600.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status cancelled">Cancelled</span></td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <!-- Mobile Card View -->
-                                <div class="orders-mobile-view">
-                                    <!-- Order 1 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #1</div>
-                                            <div class="mobile-order-time">08:13:47</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/NQ</div>
-                                            <span class="order-type sell">Sell</span>
-                                            <div class="mobile-order-size">3 contracts</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Execute Price</div>
-                                                <div class="mobile-field-value">22,650.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status filled">Filled</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order 2 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #2</div>
-                                            <div class="mobile-order-time">08:13:47</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/NQ</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">3 contracts</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Stop Price</div>
-                                                <div class="mobile-field-value">22,580.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order 3 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #3</div>
-                                            <div class="mobile-order-time">08:13:47</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/NQ</div>
-                                            <span class="order-type sell">Sell</span>
-                                            <div class="mobile-order-size">3 contracts</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">22,750.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order 4 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #4</div>
-                                            <div class="mobile-order-time">05:42:25</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/NQ</div>
-                                            <span class="order-type sell">Sell</span>
-                                            <div class="mobile-order-size">1 contract</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">22,800.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order 5 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #5</div>
-                                            <div class="mobile-order-time">05:42:25</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/NQ</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">2 contracts</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">22,600.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status cancelled">Cancelled</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -3930,221 +3719,477 @@
 
                         </div>
 
-                        <!-- Active Orders Section -->
-                        <div class="active-orders-section">
-                            <div class="active-orders-header">
-                                <h3 class="active-orders-title">Active Orders - MGC</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="live-positions-2-content" class="main-content" style="display: none;">
+            <style>
+                /* Active Orders Section */
+                .active-orders-section {
+                    margin-top: 2rem;
+                    padding-top: 1.5rem;
+                    border-top: 2px solid #e5e7eb;
+                }
+
+                .active-orders-header {
+                    margin-bottom: 1rem;
+                }
+
+                .active-orders-title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #1f2937;
+                    margin: 0;
+                }
+
+                .orders-table-container {
+                    background: #2a2a2a;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    border: 1px solid #404040;
+                }
+
+                .orders-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    background: #2a2a2a;
+                    color: #ffffff;
+                    font-size: 0.875rem;
+                }
+
+                .orders-table th {
+                    background: #1a1a1a;
+                    color: #b0b0b0;
+                    font-weight: 500;
+                    padding: 0.75rem 0.5rem;
+                    text-align: left;
+                    border-bottom: 1px solid #404040;
+                    font-size: 0.8rem;
+                }
+
+                .orders-table td {
+                    padding: 0.75rem 0.5rem;
+                    border-bottom: 1px solid #404040;
+                    color: #e0e0e0;
+                }
+
+                .orders-table tr:hover {
+                    background: #333333;
+                }
+
+                .orders-table tr:last-child td {
+                    border-bottom: none;
+                }
+
+                .order-type {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 4px;
+                    text-transform: capitalize;
+                }
+
+                .order-type.buy {
+                    color: #22c55e;
+                }
+
+                .order-type.sell {
+                    color: #ef4444;
+                }
+
+                .status {
+                    font-size: 0.75rem;
+                    font-weight: 500;
+                    padding: 0.2rem 0.5rem;
+                    border-radius: 4px;
+                    text-transform: capitalize;
+                }
+
+                .status.filled {
+                    color: #22c55e;
+                }
+
+                .status.open {
+                    color: #3b82f6;
+                }
+
+                .status.cancelled {
+                    color: #ef4444;
+                }
+
+                .cancel-btn {
+                    color: #ef4444;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    text-align: center;
+                    width: 20px;
+                    height: 20px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 4px;
+                    transition: all 0.2s ease;
+                }
+
+                .cancel-btn:hover {
+                    background: #ef4444;
+                    color: white;
+                }
+
+                /* Mobile Responsive Design for Orders Table */
+                @media (max-width: 1024px) {
+                    .orders-table-container {
+                        background: transparent;
+                        border: none;
+                        border-radius: 0;
+                    }
+
+                    .orders-table {
+                        display: none !important;
+                    }
+
+                    .orders-mobile-view {
+                        display: block !important;
+                    }
+
+                    .mobile-order-card {
+                        background: #2a2a2a;
+                        border: 1px solid #404040;
+                        border-radius: 8px;
+                        margin-bottom: 1rem;
+                        padding: 1rem;
+                        color: #ffffff;
+                    }
+
+                    .mobile-order-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 0.75rem;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 1px solid #404040;
+                    }
+
+                    .mobile-order-id {
+                        font-weight: 600;
+                        color: #b0b0b0;
+                        font-size: 0.875rem;
+                    }
+
+                    .mobile-order-time {
+                        font-size: 0.75rem;
+                        color: #888888;
+                    }
+
+                    .mobile-order-main {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 0.75rem;
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .mobile-order-symbol {
+                        grid-column: 1 / -1;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .mobile-symbol-text {
+                        font-weight: 600;
+                        font-size: 1rem;
+                    }
+
+                    .mobile-order-size {
+                        font-size: 0.875rem;
+                        color: #e0e0e0;
+                    }
+
+                    .mobile-order-field {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.25rem;
+                    }
+
+                    .mobile-field-label {
+                        font-size: 0.7rem;
+                        color: #888888;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .mobile-field-value {
+                        font-size: 0.875rem;
+                        color: #e0e0e0;
+                        font-weight: 500;
+                    }
+
+                    .mobile-order-footer {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding-top: 0.75rem;
+                        border-top: 1px solid #404040;
+                    }
+
+                    .mobile-order-status {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    .mobile-cancel-btn {
+                        background: #ef4444;
+                        color: white;
+                        border: none;
+                        border-radius: 4px;
+                        padding: 0.25rem 0.5rem;
+                        font-size: 0.75rem;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    }
+
+                    .mobile-cancel-btn:hover {
+                        background: #dc2626;
+                    }
+
+                    .mobile-cancel-btn:disabled {
+                        background: #666666;
+                        cursor: not-allowed;
+                    }
+                }
+
+                /* Hide mobile view on desktop */
+                @media (min-width: 1025px) {
+                    .orders-mobile-view {
+                        display: none !important;
+                    }
+                }
+
+                /* Show mobile view on small screens by default */
+                @media (max-width: 1024px) {
+                    .orders-mobile-view {
+                        display: block !important;
+                    }
+                }
+            </style>
+
+            <div class="active-orders-section">
+                <div class="active-orders-header">
+                    <h3 class="active-orders-title">Active Orders - NQ</h3>
+                </div>
+                <div class="orders-table-container">
+                    <!-- Desktop Table View -->
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Time</th>
+                                <th>Symbol</th>
+                                <th>Size</th>
+                                <th>Order Type</th>
+                                <th>Limit Price</th>
+                                <th>Stop Price</th>
+                                <th>Execute Price</th>
+                                <th>Status</th>
+                                <th>Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>2025-07-08 08:13:47.606</td>
+                                <td>/NQ</td>
+                                <td>3</td>
+                                <td><span class="order-type sell">Sell</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>22,650.00</td>
+                                <td><span class="status filled">Filled</span></td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>2025-07-08 08:13:47.628</td>
+                                <td>/NQ</td>
+                                <td>3</td>
+                                <td><span class="order-type buy">Buy</span></td>
+                                <td>-</td>
+                                <td>22,580.00</td>
+                                <td>-</td>
+                                <td><span class="status open">Open</span></td>
+                                <td><span class="cancel-btn">✕</span></td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>2025-07-08 08:13:47.628</td>
+                                <td>/NQ</td>
+                                <td>3</td>
+                                <td><span class="order-type sell">Sell</span></td>
+                                <td>22,750.00</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="status open">Open</span></td>
+                                <td><span class="cancel-btn">✕</span></td>
+                            </tr>
+                            <tr>
+                                <td>4.</td>
+                                <td>2025-07-08 05:42:25.941</td>
+                                <td>/NQ</td>
+                                <td>1</td>
+                                <td><span class="order-type sell">Sell</span></td>
+                                <td>22,800.00</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="status open">Open</span></td>
+                                <td><span class="cancel-btn">✕</span></td>
+                            </tr>
+                            <tr>
+                                <td>5.</td>
+                                <td>2025-07-08 05:42:25.964</td>
+                                <td>/NQ</td>
+                                <td>2</td>
+                                <td><span class="order-type buy">Buy</span></td>
+                                <td>22,600.00</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="status cancelled">Cancelled</span></td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Mobile Card View -->
+                    <div class="orders-mobile-view">
+                        <!-- Order 1 -->
+                        <div class="mobile-order-card">
+                            <div class="mobile-order-header">
+                                <div class="mobile-order-id">Order #1</div>
+                                <div class="mobile-order-time">08:13:47</div>
                             </div>
-                            <div class="orders-table-container">
-                                <table class="orders-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Time</th>
-                                            <th>Symbol</th>
-                                            <th>Size</th>
-                                            <th>Order Type</th>
-                                            <th>Limit Price</th>
-                                            <th>Stop Price</th>
-                                            <th>Execute Price</th>
-                                            <th>Status</th>
-                                            <th>Cancel</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>2025-07-08 09:15:23.441</td>
-                                            <td>/MGC</td>
-                                            <td>1</td>
-                                            <td><span class="order-type sell">Sell</span></td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>2,085.40</td>
-                                            <td><span class="status filled">Filled</span></td>
-                                            <td>-</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>2025-07-08 09:15:23.455</td>
-                                            <td>/MGC</td>
-                                            <td>1</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>-</td>
-                                            <td>2,095.00</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>2025-07-08 09:15:23.455</td>
-                                            <td>/MGC</td>
-                                            <td>1</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>2,065.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>2025-07-08 08:22:15.332</td>
-                                            <td>/MGC</td>
-                                            <td>2</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>2,050.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status open">Open</span></td>
-                                            <td><span class="cancel-btn">✕</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5.</td>
-                                            <td>2025-07-08 07:45:12.891</td>
-                                            <td>/MGC</td>
-                                            <td>1</td>
-                                            <td><span class="order-type buy">Buy</span></td>
-                                            <td>2,070.00</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td><span class="status cancelled">Cancelled</span></td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="mobile-order-symbol">
+                                <div class="mobile-symbol-text">/NQ</div>
+                                <span class="order-type sell">Sell</span>
+                                <div class="mobile-order-size">3 contracts</div>
+                            </div>
+                            <div class="mobile-order-main">
+                                <div class="mobile-order-field">
+                                    <div class="mobile-field-label">Execute Price</div>
+                                    <div class="mobile-field-value">22,650.00</div>
+                                </div>
+                            </div>
+                            <div class="mobile-order-footer">
+                                <div class="mobile-order-status">
+                                    <span class="status filled">Filled</span>
+                                </div>
+                            </div>
+                        </div>
 
-                                <!-- Mobile Card View -->
-                                <div class="orders-mobile-view">
-                                    <!-- Order 1 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #1</div>
-                                            <div class="mobile-order-time">09:15:23</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/MGC</div>
-                                            <span class="order-type sell">Sell</span>
-                                            <div class="mobile-order-size">1 contract</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Execute Price</div>
-                                                <div class="mobile-field-value">2,085.40</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status filled">Filled</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Order 2 -->
+                        <div class="mobile-order-card">
+                            <div class="mobile-order-header">
+                                <div class="mobile-order-id">Order #2</div>
+                                <div class="mobile-order-time">08:13:47</div>
+                            </div>
+                            <div class="mobile-order-symbol">
+                                <div class="mobile-symbol-text">/NQ</div>
+                                <span class="order-type buy">Buy</span>
+                                <div class="mobile-order-size">3 contracts</div>
+                            </div>
+                            <div class="mobile-order-main">
+                                <div class="mobile-order-field">
+                                    <div class="mobile-field-label">Stop Price</div>
+                                    <div class="mobile-field-value">22,580.00</div>
+                                </div>
+                            </div>
+                            <div class="mobile-order-footer">
+                                <div class="mobile-order-status">
+                                    <span class="status open">Open</span>
+                                </div>
+                                <button class="mobile-cancel-btn">Cancel</button>
+                            </div>
+                        </div>
 
-                                    <!-- Order 2 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #2</div>
-                                            <div class="mobile-order-time">09:15:23</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/MGC</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">1 contract</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Stop Price</div>
-                                                <div class="mobile-field-value">2,095.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
+                        <!-- Order 3 -->
+                        <div class="mobile-order-card">
+                            <div class="mobile-order-header">
+                                <div class="mobile-order-id">Order #3</div>
+                                <div class="mobile-order-time">08:13:47</div>
+                            </div>
+                            <div class="mobile-order-symbol">
+                                <div class="mobile-symbol-text">/NQ</div>
+                                <span class="order-type sell">Sell</span>
+                                <div class="mobile-order-size">3 contracts</div>
+                            </div>
+                            <div class="mobile-order-main">
+                                <div class="mobile-order-field">
+                                    <div class="mobile-field-label">Limit Price</div>
+                                    <div class="mobile-field-value">22,750.00</div>
+                                </div>
+                            </div>
+                            <div class="mobile-order-footer">
+                                <div class="mobile-order-status">
+                                    <span class="status open">Open</span>
+                                </div>
+                                <button class="mobile-cancel-btn">Cancel</button>
+                            </div>
+                        </div>
 
-                                    <!-- Order 3 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #3</div>
-                                            <div class="mobile-order-time">09:15:23</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/MGC</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">1 contract</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">2,065.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
+                        <!-- Order 4 -->
+                        <div class="mobile-order-card">
+                            <div class="mobile-order-header">
+                                <div class="mobile-order-id">Order #4</div>
+                                <div class="mobile-order-time">05:42:25</div>
+                            </div>
+                            <div class="mobile-order-symbol">
+                                <div class="mobile-symbol-text">/NQ</div>
+                                <span class="order-type sell">Sell</span>
+                                <div class="mobile-order-size">1 contract</div>
+                            </div>
+                            <div class="mobile-order-main">
+                                <div class="mobile-order-field">
+                                    <div class="mobile-field-label">Limit Price</div>
+                                    <div class="mobile-field-value">22,800.00</div>
+                                </div>
+                            </div>
+                            <div class="mobile-order-footer">
+                                <div class="mobile-order-status">
+                                    <span class="status open">Open</span>
+                                </div>
+                                <button class="mobile-cancel-btn">Cancel</button>
+                            </div>
+                        </div>
 
-                                    <!-- Order 4 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #4</div>
-                                            <div class="mobile-order-time">08:22:15</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/MGC</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">2 contracts</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">2,050.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status open">Open</span>
-                                            </div>
-                                            <button class="mobile-cancel-btn">Cancel</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Order 5 -->
-                                    <div class="mobile-order-card">
-                                        <div class="mobile-order-header">
-                                            <div class="mobile-order-id">Order #5</div>
-                                            <div class="mobile-order-time">07:45:12</div>
-                                        </div>
-                                        <div class="mobile-order-symbol">
-                                            <div class="mobile-symbol-text">/MGC</div>
-                                            <span class="order-type buy">Buy</span>
-                                            <div class="mobile-order-size">1 contract</div>
-                                        </div>
-                                        <div class="mobile-order-main">
-                                            <div class="mobile-order-field">
-                                                <div class="mobile-field-label">Limit Price</div>
-                                                <div class="mobile-field-value">2,070.00</div>
-                                            </div>
-                                        </div>
-                                        <div class="mobile-order-footer">
-                                            <div class="mobile-order-status">
-                                                <span class="status cancelled">Cancelled</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Order 5 -->
+                        <div class="mobile-order-card">
+                            <div class="mobile-order-header">
+                                <div class="mobile-order-id">Order #5</div>
+                                <div class="mobile-order-time">05:42:25</div>
+                            </div>
+                            <div class="mobile-order-symbol">
+                                <div class="mobile-symbol-text">/NQ</div>
+                                <span class="order-type buy">Buy</span>
+                                <div class="mobile-order-size">2 contracts</div>
+                            </div>
+                            <div class="mobile-order-main">
+                                <div class="mobile-order-field">
+                                    <div class="mobile-field-label">Limit Price</div>
+                                    <div class="mobile-field-value">22,600.00</div>
+                                </div>
+                            </div>
+                            <div class="mobile-order-footer">
+                                <div class="mobile-order-status">
+                                    <span class="status cancelled">Cancelled</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -5587,6 +5632,7 @@
             document.getElementById('copy-trade-content').style.display = 'none';
             document.getElementById('trade-history-content').style.display = 'none';
             document.getElementById('live-positions-content').style.display = 'none';
+            document.getElementById('live-positions-2-content').style.display = 'none';
             document.getElementById('manage-firms-content').style.display = 'none';
             document.getElementById('risk-settings-content').style.display = 'none';
             
@@ -5952,6 +5998,7 @@
                 'copy-trade': 'Copy Trader',
                 'trade-history': 'Trade History',
                 'live-positions': 'Live Positions',
+                'live-positions-2': 'Orders',
                 'manage-firms': 'Manage Firms',
                 'risk-settings': 'Risk Settings'
             };
