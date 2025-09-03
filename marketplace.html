@@ -216,7 +216,7 @@
                     </svg>
                     Send Signal
                 </a>
-                <a href="#" class="nav-item">
+                <a href="subscriber_crm.html" class="nav-item">
                     <svg class="nav-icon" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/>
                     </svg>
@@ -237,7 +237,7 @@
                 <button
                     id="theme-toggle"
                     onclick="toggleTheme()"
-                    class="p-3 rounded-full transition-all duration-300 bg-slate-800/50 text-yellow-400 hover:bg-slate-700/50 backdrop-blur-xl border border-slate-700/50"
+                    class="p-3 rounded-full transition-all duration-300 bg-gradient-to-r from-sky-500/20 via-blue-500/20 to-cyan-500/20 text-cyan-400 hover:from-sky-400/30 hover:via-blue-400/30 hover:to-cyan-400/30 backdrop-blur-xl border border-cyan-400/30 hover:shadow-cyan-400/20 hover:shadow-lg"
                 >
                     <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="5"/>
@@ -285,7 +285,7 @@
     </div>
 
     <script>
-        let isDarkMode = true;
+        let isDarkMode = false;
 
         const investorsData = [
             {
@@ -746,11 +746,15 @@
                     </div>
 
                     <!-- Action Button -->
-                    <button class="relative w-full mt-4 ${isDarkMode 
-                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 hover:shadow-green-500/25' 
-                        : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 hover:shadow-green-500/25'
-                    } text-white font-semibold py-2 px-4 rounded-lg text-sm transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg">
-                        See Profile
+                    <button onclick="window.location.href='trader-profile.html'" class="relative w-full mt-4 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-500 hover:from-sky-400 hover:via-blue-400 hover:to-cyan-400 hover:shadow-cyan-500/30 hover:shadow-lg' 
+                        : 'bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 hover:from-sky-400 hover:via-blue-400 hover:to-indigo-400 hover:shadow-blue-500/30 hover:shadow-lg'
+                    } text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r ${isDarkMode 
+                            ? 'from-cyan-400/20 via-blue-400/20 to-purple-400/20' 
+                            : 'from-sky-400/20 via-blue-400/20 to-indigo-400/20'
+                        } opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                        <span class="relative z-10">See Profile</span>
                     </button>
                 </div>
             `;
@@ -794,7 +798,7 @@
             } else {
                 app.className = 'min-h-screen transition-all duration-500 bg-gradient-to-br from-gray-50 via-white to-gray-100';
                 themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-                themeToggle.className = 'p-3 rounded-full transition-all duration-300 bg-white/70 text-blue-600 hover:bg-white/90 backdrop-blur-xl border border-gray-200/50';
+                themeToggle.className = 'p-3 rounded-full transition-all duration-300 bg-gradient-to-r from-sky-400/10 via-blue-400/10 to-indigo-400/10 text-sky-600 hover:from-sky-400/20 hover:via-blue-400/20 hover:to-indigo-400/20 backdrop-blur-xl border border-sky-400/30 hover:shadow-sky-400/20 hover:shadow-lg';
                 backgroundPattern.className = 'absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(107,114,128,0.03),transparent_50%)]';
                 mainTitle.className = 'text-5xl font-bold mb-4 text-black';
                 mainSubtitle.className = 'text-lg max-w-2xl mx-auto bg-gradient-to-r from-gray-600 via-gray-500 to-gray-700 bg-clip-text text-transparent';
@@ -815,6 +819,7 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
+            updateTheme();
             renderInvestors();
         });
 

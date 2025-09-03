@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriber Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #f5f7fa;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0 20px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #5d6dff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        
+        .profile-ticker {
+            color: #a0a6b1;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e1e4ea;
+            background-color: #f5f7fa;
+        }
+
+        .tab {
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab.active {
+            color: #3b5ef8;
+            font-weight: 600;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #3b5ef8;
+        }
+
+        .search-box {
+            padding: 10px 16px;
+            background-color: #f5f7fa;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 46px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ffffff;
+            font-size: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>');
+            background-repeat: no-repeat;
+            background-position: 16px center;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .subscriber-list {
+            padding: 8px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subscriber-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            position: relative;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .subscriber-item:last-child {
+            border-bottom: none;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: white;
+            margin-right: 12px;
+            flex-shrink: 0;
+            font-size: 24px;
+            background-color: #5d6dff;
+        }
+
+        .avatar.s {
+            background-color: #5d6dff;
+        }
+
+        .avatar.m {
+            background-color: #5d6dff;
+        }
+
+        .avatar.a {
+            background-color: #5d6dff;
+        }
+
+        .avatar.j {
+            background-color: #5d6dff;
+        }
+
+        .avatar.d {
+            background-color: #5d6dff;
+        }
+
+        .subscriber-info {
+            flex-grow: 1;
+        }
+
+        .subscriber-name {
+            font-weight: 500;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .subscriber-meta {
+            font-size: 14px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .subscriber-status {
+            display: flex;
+            align-items: center;
+            margin-right: 12px;
+        }
+
+        .status-tag {
+            padding: 8px 12px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-tag.subscribed {
+            background-color: rgba(72, 187, 120, 0.15);
+            color: #38a169;
+        }
+
+        .status-tag.requested {
+            background-color: rgba(246, 173, 85, 0.15);
+            color: #dd6b20;
+        }
+
+        .status-tag.denied {
+            background-color: rgba(245, 101, 101, 0.15);
+            color: #e53e3e;
+        }
+
+        .status-tag.unsubscribed {
+            background-color: rgba(160, 174, 192, 0.15);
+            color: #718096;
+        }
+
+        .menu-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #999;
+        }
+
+        .menu-button:hover {
+            background-color: #f5f7fa;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 40px;
+            right: 16px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            width: 180px;
+            z-index: 10;
+            overflow: hidden;
+            display: none;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f7fa;
+        }
+
+        .dropdown-item.danger {
+            color: #e53e3e;
+        }
+
+        .dropdown-item.success {
+            color: #38a169;
+        }
+
+        .dropdown-item.warning {
+            color: #dd6b20;
+        }
+        
+        .dropdown-item.yellow {
+            color: #ecc94b;
+        }
+        
+        .dropdown-item.red {
+            color: #e53e3e;
+        }
+
+        /* Navigation Styles */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #333;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: #f8f9fa;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
+
+        .user-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: #fd7e14;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            color: #212529;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-email {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .nav-section {
+            padding: 40px 0 20px 0;
+        }
+
+        .nav-title {
+            color: #6c757d;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            color: #495057;
+        }
+
+        .nav-item.active {
+            background: #d1e7dd;
+            color: #198754;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="user-info">
+                <div class="user-avatar">E</div>
+                <div class="user-details">
+                    <div class="user-name">ElijahAbas</div>
+                    <div class="user-email">elijahfermabas@gmail.com</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                    </svg>
+                    Signals
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20 8H4V6h16zm-2-6H6v2h12zm4 10v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2m-6 4-6-3.27v6.53z"/>
+                    </svg>
+                    Subscriptions
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+                    </svg>
+                    Market Place
+                </a>
+                <a href="projectx_firms_interface.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"/>
+                    </svg>
+                    ProjectX Firms
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Traders</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="m4.01 6.03 7.51 3.22-7.52-1zm7.5 8.72L4 17.97v-2.22zM2.01 3 2 10l15 2-15 2 .01 7L23 12z"/>
+                    </svg>
+                    Send Signal
+                </a>
+                <a href="subscriber_crm.html" class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/>
+                    </svg>
+                    Subscriber CRM
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-avatar">P</div>
+            <div class="profile-ticker">$FNDR</div>
+            <div class="profile-name">CryptoKing</div>
+        </div>
+        <div class="tabs">
+            <div class="tab active">All</div>
+            <div class="tab">Active</div>
+            <div class="tab">Pending</div>
+            <div class="tab">Past</div>
+        </div>
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search subscribers...">
+        </div>
+        <div class="subscriber-list">
+            <div class="subscriber-item">
+                <div class="avatar s">S</div>
+                <div class="subscriber-info">
+                    <div class="subscriber-name">Sarah Chen</div>
+                    <div class="subscriber-meta">Joined Oct 2023</div>
+                </div>
+                <div class="subscriber-status">
+                    <div class="status-tag subscribed">Subscribed</div>
+                </div>
+                <button class="menu-button" onclick="toggleMenu('menu1')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                </button>
+                <div class="dropdown" id="menu1">
+                    <div class="dropdown-item yellow">Pause Subscription</div>
+                    <div class="dropdown-item danger">Cancel Subscription</div>
+                </div>
+            </div>
+            <div class="subscriber-item">
+                <div class="avatar m">M</div>
+                <div class="subscriber-info">
+                    <div class="subscriber-name">Mike Roberts</div>
+                    <div class="subscriber-meta">Joined Nov 2023</div>
+                </div>
+                <div class="subscriber-status">
+                    <div class="status-tag requested">Requested</div>
+                </div>
+                <button class="menu-button" onclick="toggleMenu('menu2')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                </button>
+                <div class="dropdown" id="menu2">
+                    <div class="dropdown-item success">Approve</div>
+                    <div class="dropdown-item red">Deny</div>
+                </div>
+            </div>
+            <div class="subscriber-item">
+                <div class="avatar a">A</div>
+                <div class="subscriber-info">
+                    <div class="subscriber-name">Alex Kumar</div>
+                    <div class="subscriber-meta">Joined Dec 2023</div>
+                </div>
+                <div class="subscriber-status">
+                    <div class="status-tag denied">Denied</div>
+                </div>
+                <button class="menu-button" onclick="toggleMenu('menu3')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                </button>
+                <div class="dropdown" id="menu3">
+                    <div class="dropdown-item success">Approve</div>
+                </div>
+            </div>
+            <div class="subscriber-item">
+                <div class="avatar j">J</div>
+                <div class="subscriber-info">
+                    <div class="subscriber-name">Jessica Lee</div>
+                    <div class="subscriber-meta">Joined Dec 2023</div>
+                </div>
+                <div class="subscriber-status">
+                    <div class="status-tag subscribed">Subscribed</div>
+                </div>
+                <button class="menu-button" onclick="toggleMenu('menu4')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                </button>
+                <div class="dropdown" id="menu4">
+                    <div class="dropdown-item yellow">Pause Subscription</div>
+                    <div class="dropdown-item danger">Cancel Subscription</div>
+                </div>
+            </div>
+            <div class="subscriber-item">
+                <div class="avatar d">D</div>
+                <div class="subscriber-info">
+                    <div class="subscriber-name">David Wilson</div>
+                    <div class="subscriber-meta">Joined Jan 2024</div>
+                </div>
+                <div class="subscriber-status">
+                    <div class="status-tag unsubscribed">Unsubscribed</div>
+                </div>
+                <!-- No menu button for unsubscribed users as requested -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle dropdown menus
+        function toggleMenu(menuId) {
+            // Close all other open menus first
+            document.querySelectorAll('.dropdown.active').forEach(menu => {
+                if (menu.id !== menuId) {
+                    menu.classList.remove('active');
+                }
+            });
+            
+            // Toggle the selected menu
+            const menu = document.getElementById(menuId);
+            menu.classList.toggle('active');
+            
+            // Prevent the click from propagating to the document
+            event.stopPropagation();
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.menu-button') && !event.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const allTab = document.querySelector('.tab:first-child');
+        const activeTab = document.querySelector('.tab:nth-child(2)');
+        const pendingTab = document.querySelector('.tab:nth-child(3)');
+        const pastTab = document.querySelector('.tab:nth-child(4)');
+        const subscriberItems = document.querySelectorAll('.subscriber-item');
+        
+        // Show all items by default (All tab)
+        function showAllItems() {
+            subscriberItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+        }
+        
+        // Show only subscribed items (Active tab)
+        function showActiveItems() {
+            subscriberItems.forEach(item => {
+                const status = item.querySelector('.status-tag');
+                if (status && status.classList.contains('subscribed')) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show only requested items (Pending tab)
+        function showPendingItems() {
+            subscriberItems.forEach(item => {
+                const status = item.querySelector('.status-tag');
+                if (status && status.classList.contains('requested')) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Show only denied and unsubscribed items (Past tab)
+        function showPastItems() {
+            subscriberItems.forEach(item => {
+                const status = item.querySelector('.status-tag');
+                if (status && (status.classList.contains('denied') || status.classList.contains('unsubscribed'))) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if (tab === allTab) {
+                    showAllItems();
+                } else if (tab === activeTab) {
+                    showActiveItems();
+                } else if (tab === pendingTab) {
+                    showPendingItems();
+                } else if (tab === pastTab) {
+                    showPastItems();
+                }
+            });
+        });
+        
+        // Remove "Joined MMM YYYY" text and center names vertically
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.subscriber-meta').forEach(meta => {
+                meta.style.display = 'none';
+            });
+        });
+
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

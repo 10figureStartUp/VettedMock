@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .hamburger.hidden {
+            transform: translateY(-80px);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #333;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: #f8f9fa;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 40px 30px 30px 30px;
+            text-align: center;
+        }
+
+        .user-info {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: #fd7e14;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            color: #212529;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .user-email {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .nav-section {
+            padding: 40px 0 20px 0;
+        }
+
+        .nav-title {
+            color: #6c757d;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .nav-item:hover {
+            color: #495057;
+        }
+
+        .nav-item.active {
+            background: #d1e7dd;
+            color: #198754;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            fill: currentColor;
+        }
+
+        /* Desktop Layout */
+        @media (min-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                left: -400px;
+                background: #f8f9fa;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .hamburger {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+            }
+            
+            .main-content {
+                max-width: 800px;
+                margin-right: auto;
+                margin-left: auto;
+            }
+            
+            .desktop-side-panel {
+                position: fixed;
+                top: 20px;
+                width: 320px;
+                z-index: 500;
+                transition: all 0.3s ease;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+        }
+
+        .desktop-side-panel.hidden {
+            opacity: 0;
+            transform: translateX(100px);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="user-info">
+                <div class="user-avatar">E</div>
+                <div class="user-details">
+                    <div class="user-name">ElijahAbas</div>
+                    <div class="user-email">elijahfermabas@gmail.com</div>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                    </svg>
+                    Signals
+                </a>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20 8H4V6h16zm-2-6H6v2h12zm4 10v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2v-8c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2m-6 4-6-3.27v6.53z"/>
+                    </svg>
+                    Subscriptions
+                </a>
+                <a href="marketplace.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+                    </svg>
+                    Market Place
+                </a>
+                <a href="projectx_firms_interface.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"/>
+                    </svg>
+                    ProjectX Firms
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Traders</div>
+                <a href="#" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="m4.01 6.03 7.51 3.22-7.52-1zm7.5 8.72L4 17.97v-2.22zM2.01 3 2 10l15 2-15 2 .01 7L23 12z"/>
+                    </svg>
+                    Send Signal
+                </a>
+                <a href="subscriber_crm.html" class="nav-item">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/>
+                    </svg>
+                    Subscriber CRM
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Desktop Floating Subscription Card -->
+    <div class="desktop-side-panel" id="subscriptionCard">
+        <div class="bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+            <h4 class="font-semibold mb-2 text-lg">Subscribe to Signals</h4>
+            <p class="text-sm text-gray-600 mb-6">Get real-time trade signals and market analysis from No Motion Bert</p>
+            
+            <div class="space-y-4">
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border">
+                    <div>
+                        <div class="font-medium">Basic Plan</div>
+                        <div class="text-sm text-gray-500">Daily signals</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold">$49/mo</div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div>
+                        <div class="font-medium text-blue-600">Pro Plan</div>
+                        <div class="text-sm text-gray-500">Live alerts + analysis</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-blue-600">$99/mo</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full mt-6 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                Subscribe Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="px-4 py-3 bg-white border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleMenu()" class="lg:hidden p-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold">$NACO</h1>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="p-1.5 hover:bg-gray-100 rounded-full">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                        </svg>
+                    </button>
+                    <button class="p-1.5 hover:bg-gray-100 rounded-full">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-3 bg-white">
+            <!-- Portfolio Header -->
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-blue-100 overflow-hidden flex items-center justify-center">
+                    <div class="w-6 h-6 bg-blue-500 rounded"></div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold mb-0.5">No Motion Bert</h2>
+                    <div class="flex items-center">
+                        <div class="flex">
+                            <svg class="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" viewBox="0 0 24 24">
+                                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" viewBox="0 0 24 24">
+                                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" viewBox="0 0 24 24">
+                                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" viewBox="0 0 24 24">
+                                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            <svg class="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" viewBox="0 0 24 24">
+                                <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500 ml-1">(235)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="mb-4">
+                <div class="text-2xl font-bold mb-1">$114,753</div>
+                <div class="text-green-500 text-base font-semibold">
+                    +62,603 (+120.00%) All Time
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="h-64 -mx-4 mb-4 relative">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+
+            <!-- Time Period Selector -->
+            <div class="flex justify-center space-x-4 mb-3 text-sm overflow-x-auto border-b border-gray-100 pb-3">
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-500" data-period="1d">1d</button>
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-500" data-period="1w">1w</button>
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-500" data-period="1m">1m</button>
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-500" data-period="YTD">YTD</button>
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-500" data-period="1y">1y</button>
+                <button class="time-period whitespace-nowrap px-2 py-1 text-gray-900 font-semibold" data-period="All Time">All Time</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 mb-4 -mx-4">
+                <button class="tab-button flex-1 px-4 py-2.5 text-sm font-semibold border-b-2 border-gray-900 text-gray-900" data-tab="overview">
+                    Overview
+                </button>
+                <button class="tab-button flex-1 px-4 py-2.5 text-sm text-gray-500" data-tab="signals">Signals</button>
+                <button class="tab-button flex-1 px-4 py-2.5 text-sm text-gray-500" data-tab="reviews">Reviews</button>
+            </div>
+
+            <!-- Bento Box Stats -->
+            <div class="grid grid-cols-4 gap-2 mb-6 p-1.5 bg-gray-50 rounded-xl">
+                <div class="bg-white p-2 rounded-lg flex flex-col items-center">
+                    <div class="text-sm font-semibold">1st</div>
+                    <div class="text-xs text-gray-500">Rank</div>
+                </div>
+                <div class="bg-white p-2 rounded-lg flex flex-col items-center">
+                    <div class="text-sm font-semibold text-green-500">84%</div>
+                    <div class="text-xs text-gray-500">Win Rate</div>
+                </div>
+                <div class="bg-white p-2 rounded-lg flex flex-col items-center">
+                    <div class="text-sm font-semibold">2.8K</div>
+                    <div class="text-xs text-gray-500">Subscribers</div>
+                </div>
+                <div class="bg-white p-2 rounded-lg flex flex-col items-center">
+                    <div class="text-sm font-semibold text-green-500">+253.5%</div>
+                    <div class="text-xs text-gray-500">Yearly Avg</div>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-semibold">Overview</h3>
+                    <div class="text-xs text-gray-500 flex items-center">
+                        Inception Date: Mar 28, 2023
+                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mb-3">
+                    A specialized Micro Nasdaq Futures (MNQ) trading system developed for prop firm performance. This strategy capitalizes on institutional order flow patterns and key market reversals, utilizing proprietary liquidity analysis techniques. Our edge comes from identifying specific market behaviors that often precede significant directional moves.
+                </p>
+            </div>
+
+            <!-- Signal History Section -->
+            <div class="rounded-lg overflow-hidden">
+                <div class="text-lg font-semibold mb-3">Signal History</div>
+                <div class="bg-gray-50 rounded-lg">
+                    <div class="grid grid-cols-4 px-4 py-2 border-b border-gray-200">
+                        <div class="text-sm font-medium text-gray-600">Ticker</div>
+                        <div class="text-sm font-medium text-gray-600">Status</div>
+                        <div class="text-sm font-medium text-gray-600">Gain</div>
+                        <div class="text-sm font-medium text-gray-600">Recap</div>
+                    </div>
+                    <div id="signalHistory">
+                        <!-- Signal rows will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let selectedPeriod = 'All Time';
+        let chart;
+
+        // Generate chart data with proper time labels
+        function generateChartData() {
+            const data = [];
+            const labels = [];
+            const startValue = 52150; // Starting investment amount
+            const endValue = 114753; // Current value displayed
+            const totalReturn = endValue / startValue; // ~2.2x return
+            const points = 100;
+            
+            // Generate dates for labels (assuming data from Mar 2023 to now)
+            const startDate = new Date('2023-03-28');
+            const endDate = new Date();
+            const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+            
+            let cumulativeGrowth = 1;
+            
+            for (let i = 0; i < points; i++) {
+                // Create realistic growth pattern with some volatility
+                const progress = i / (points - 1);
+                const targetGrowth = Math.pow(totalReturn, progress);
+                
+                // Add some realistic market volatility
+                const volatility = (Math.random() - 0.5) * 0.08; // ±4% random movement
+                const smoothingFactor = 0.85;
+                
+                if (i === 0) {
+                    cumulativeGrowth = 1;
+                } else if (i === points - 1) {
+                    cumulativeGrowth = totalReturn; // Ensure we end at exact target
+                } else {
+                    // Smooth progression with some randomness
+                    cumulativeGrowth = (smoothingFactor * targetGrowth) + ((1 - smoothingFactor) * cumulativeGrowth * (1 + volatility));
+                    // Ensure growth doesn't go negative
+                    cumulativeGrowth = Math.max(0.5, cumulativeGrowth);
+                }
+                
+                const portfolioValue = Math.round(startValue * cumulativeGrowth);
+                
+                // Generate date label
+                const currentDate = new Date(startDate.getTime() + (daysDiff * progress * 24 * 60 * 60 * 1000));
+                const label = currentDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                
+                data.push({
+                    portfolio: portfolioValue
+                });
+                
+                // Only add some labels to avoid crowding
+                if (i % 20 === 0 || i === points - 1) {
+                    labels.push(label);
+                } else {
+                    labels.push('');
+                }
+            }
+            
+            return { data, labels };
+        }
+
+        // Initialize chart
+        function initChart() {
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            const chartData = generateChartData();
+            
+            // Create gradient for the line
+            const gradient = ctx.createLinearGradient(0, 0, 0, 256);
+            gradient.addColorStop(0, 'rgba(249, 115, 22, 0.3)');
+            gradient.addColorStop(1, 'rgba(249, 115, 22, 0.01)');
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Portfolio',
+                        data: chartData.data.map(d => d.portfolio),
+                        borderColor: '#f97316',
+                        backgroundColor: gradient,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointHoverBackgroundColor: '#f97316',
+                        tension: 0.2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': $';
+                                    }
+                                    label += context.parsed.y.toLocaleString();
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Signal data
+        const signals = [
+            { ticker: 'MNQ', status: 'won', gain: '+1.40%' },
+            { ticker: 'MNQ', status: 'won', gain: '+2.50%' },
+            { ticker: 'MNQ', status: 'loss', gain: '-0.80%' },
+            { ticker: 'MNQ', status: 'won', gain: '+1.44%' },
+            { ticker: 'MNQ', status: 'won', gain: '+4.08%' },
+            { ticker: 'MNQ', status: 'won', gain: '+5.00%' },
+            { ticker: 'MNQ', status: 'won', gain: '+2.00%' },
+            { ticker: 'MNQ', status: 'loss', gain: '-0.80%' }
+        ];
+
+        // Populate signal history
+        function populateSignalHistory() {
+            const container = document.getElementById('signalHistory');
+            container.innerHTML = signals.map((signal, index) => `
+                <div class="grid grid-cols-4 px-4 py-2.5 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+                    <div class="text-sm text-gray-900">${signal.ticker}</div>
+                    <div>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                            signal.status === 'won' 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                        }">
+                            ${signal.status.toUpperCase()}
+                        </span>
+                    </div>
+                    <div class="text-sm font-medium ${signal.status === 'won' ? 'text-green-600' : 'text-red-600'}">
+                        ${signal.gain}
+                    </div>
+                    <div>
+                        <button class="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                            VIEW
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle time period selection
+        function handleTimePeriodClick(event) {
+            if (event.target.classList.contains('time-period')) {
+                // Remove active class from all buttons
+                document.querySelectorAll('.time-period').forEach(btn => {
+                    btn.classList.remove('text-gray-900', 'font-semibold');
+                    btn.classList.add('text-gray-500');
+                });
+                
+                // Add active class to clicked button
+                event.target.classList.remove('text-gray-500');
+                event.target.classList.add('text-gray-900', 'font-semibold');
+                
+                selectedPeriod = event.target.dataset.period;
+            }
+        }
+
+        // Handle tab clicks
+        function handleTabClick(event) {
+            if (event.target.classList.contains('tab-button')) {
+                // Remove active styles from all tabs
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('border-b-2', 'border-gray-900', 'text-gray-900', 'font-semibold');
+                    btn.classList.add('text-gray-500');
+                });
+                
+                // Add active styles to clicked tab
+                event.target.classList.remove('text-gray-500');
+                event.target.classList.add('border-b-2', 'border-gray-900', 'text-gray-900', 'font-semibold');
+            }
+        }
+
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+
+        if (hamburger) {
+            hamburger.addEventListener('click', toggleMenu);
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (sidebar && hamburger && !sidebar.contains(e.target) && !hamburger.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // Mobile scroll behavior for hamburger menu
+        let lastScrollTop = 0;
+        let scrollTimeout;
+
+        function handleScroll() {
+            // Only apply on mobile
+            if (window.innerWidth >= 1024) return;
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const hamburgerElement = document.getElementById('hamburger');
+            
+            clearTimeout(scrollTimeout);
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down - hide hamburger
+                hamburgerElement.classList.add('hidden');
+            } else {
+                // Scrolling up - show hamburger
+                hamburgerElement.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            
+            // Show hamburger after scroll stops for 1 second
+            scrollTimeout = setTimeout(() => {
+                hamburgerElement.classList.remove('hidden');
+            }, 1000);
+        }
+
+        // Position subscription card next to profile content
+        function positionSubscriptionCard() {
+            const subscriptionCard = document.getElementById('subscriptionCard');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (!subscriptionCard || !mainContent) return;
+            
+            const mainContentRect = mainContent.getBoundingClientRect();
+            const cardWidth = 320;
+            const gap = 20;
+            const minScreenWidth = 800 + cardWidth + gap * 3; // profile + card + gaps
+            
+            if (window.innerWidth < minScreenWidth) {
+                // Hide card if screen is too narrow
+                subscriptionCard.classList.add('hidden');
+            } else {
+                // Position card next to profile content
+                subscriptionCard.classList.remove('hidden');
+                subscriptionCard.style.left = (mainContentRect.right + gap) + 'px';
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initChart();
+            populateSignalHistory();
+            positionSubscriptionCard();
+            
+            // Add event listeners
+            document.addEventListener('click', handleTimePeriodClick);
+            document.addEventListener('click', handleTabClick);
+            document.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', positionSubscriptionCard);
+        });
+    </script>
+</body>
+</html>
