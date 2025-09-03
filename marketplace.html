@@ -709,7 +709,7 @@
                     </div>
 
                     <!-- Action Button -->
-                    <button onclick="window.location.href='trader-profile.html'" class="relative w-full mt-4 ${isDarkMode 
+                    <button onclick="window.location.href='${investor.rank === 2 ? 'newtonprofile.html' : 'trader-profile.html'}'" class="relative w-full mt-4 ${isDarkMode 
                         ? 'bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-500 hover:from-sky-400 hover:via-blue-400 hover:to-cyan-400 hover:shadow-cyan-500/30 hover:shadow-lg' 
                         : 'bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 hover:from-sky-400 hover:via-blue-400 hover:to-indigo-400 hover:shadow-blue-500/30 hover:shadow-lg'
                     } text-white font-semibold py-3 px-4 rounded-xl text-sm transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden">
